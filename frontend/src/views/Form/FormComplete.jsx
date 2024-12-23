@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import "../../styles/form.scss";
 
 const FormComplete = ({ formData }) => {
   return (

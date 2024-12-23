@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables';
 
 .home {
   height: 100vh;
@@ -51,7 +51,7 @@
 }
 
 .home__main-text {
-  font-family: $font-serif;
+  font-family: variables.$font-serif;
   font-size: 3.5rem;
   font-weight: 700;
 
@@ -62,8 +62,8 @@
 }
 
 .home__button {
-  background-color: $primary-color-lighter;
-  color: $secondary-color;
+  background-color: variables.$primary-color-lighter;
+  color: variables.$secondary-color;
   margin-top: 1.4em;
   
   @media (max-width: 1024px) {
@@ -78,7 +78,7 @@
 
   &:hover {
     background-color: #004b66;
-    color:  $secondary-color;
+    color:  variables.$secondary-color;
   }
 
   &.active {

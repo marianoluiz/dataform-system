@@ -6,6 +6,7 @@ import AdminManagement from "./views/Admin/AdminManagement.jsx";
 import PrivateRoute from "./components/PrivateRoute";
 import { SidebarProvider } from "./context/SidebarContext";
 import FormRenderer from "./views/Form/FormRenderer.jsx";
+import './styles/main.scss';
 
 const App = () => {
   return (

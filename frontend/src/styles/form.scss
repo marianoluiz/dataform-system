@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables';
 
 .form__disclaimer {
   font-style: italic;
@@ -43,7 +43,7 @@
 
 // add child btn
 .form__add-btn {
-    color: $primary-color;
+    color: variables.$primary-color;
   &:hover {
     color: #014761;
   }
@@ -51,7 +51,7 @@
 
 // remove child btn
 .form__remove-btn {
-  color: $red-color;
+  color: variables.$red-color;
   &:hover {
     color: #a6071e;
   }
@@ -67,7 +67,7 @@
 }
 
 .form__navbtn {
-  background-color: $primary-color-lighter;
+  background-color: variables.$primary-color-lighter;
 }
 
 // form completion

@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables';
 
 .form__banner {
   margin-top: 64px;
@@ -18,7 +18,7 @@
 
 .form__banner-h1 {
   text-align: center;
-  font-family: $font-serif;
+  font-family: variables.$font-serif;
   font-size: 3.2rem;
   font-weight: 700;
   z-index: 2;

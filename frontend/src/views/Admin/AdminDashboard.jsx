@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layout/AdminLayout";
-import "../../styles/admin.scss";
 import { fetchStudentData } from "../../api/StudentApi";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartComponent, {

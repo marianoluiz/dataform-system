@@ -1,5 +1,4 @@
 import AdminLayout from "../../layout/AdminLayout";
-import "../../styles/admin.scss";
 import FormStepper from "../../components/FormStepper";
 import { useState, useEffect } from "react";
 import { fetchStudentData } from "../../api/StudentApi.js";

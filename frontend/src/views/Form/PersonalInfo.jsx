@@ -1,4 +1,3 @@
-import "../../styles/form.scss";
 import PropTypes from "prop-types"; //for propTyping below
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";

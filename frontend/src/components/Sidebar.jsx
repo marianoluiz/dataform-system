@@ -2,7 +2,6 @@
 import { useSidebar } from "../context/SidebarContext";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import "../styles/Sidebar.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {

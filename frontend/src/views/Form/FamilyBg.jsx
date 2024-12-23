@@ -1,4 +1,4 @@
-import "../../styles/form.scss";
+
 import PropTypes from "prop-types";
 import { updateStudent } from "../../api/StudentApi";
 import { createStudent } from "../../api/StudentApi";

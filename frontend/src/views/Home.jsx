@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
-import "../styles/home.scss";
 const Home = () => {
   return (
     <>

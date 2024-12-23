@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "../styles/FormStepper.scss";
 
 /* these props are from MultiPageForm */
 const FormStepper = ({
