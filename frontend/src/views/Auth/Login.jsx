@@ -4,8 +4,8 @@ import AuthLayout from "../../layout/AuthLayout";
 import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
