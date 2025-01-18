@@ -48,9 +48,7 @@ const PersonalInfo = ({
               id="lastname"
               name="lastname"
               placeholder="Enter your last name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
               required
-              title="Please enter a valid last name"
               value={formData.lastname}
               onChange={handleInputChange}
               /* no need to pass e, onchange automatically does that */
@@ -71,8 +69,6 @@ const PersonalInfo = ({
               id="firstname"
               name="firstname"
               placeholder="Enter your first name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Please enter a valid first name"
               required
               value={formData.firstname}
               onChange={handleInputChange}
@@ -291,9 +287,7 @@ const PersonalInfo = ({
               id="gsis_no"
               name="gsis_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your GSIS number"
-              title="Numbers only"
               value={formData.gsis_no}
               onChange={handleInputChange}
             />
@@ -312,9 +306,7 @@ const PersonalInfo = ({
               id="pagibig_no"
               name="pagibig_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your Pag-IBIG number"
-              title="Numbers only"
               value={formData.pagibig_no}
               onChange={handleInputChange}
             />
@@ -333,9 +325,7 @@ const PersonalInfo = ({
               id="philhealth_no"
               name="philhealth_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your PhilHealth number"
-              title="Numbers only"
               value={formData.philhealth_no}
               onChange={handleInputChange}
             />
@@ -354,9 +344,7 @@ const PersonalInfo = ({
               id="sss_no"
               name="sss_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your SSS number"
-              title="Numbers only"
               value={formData.sss_no}
               onChange={handleInputChange}
             />
@@ -375,9 +363,7 @@ const PersonalInfo = ({
               id="tin_no"
               name="tin_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your TIN number"
-              title="Numbers only"
               value={formData.tin_no}
               onChange={handleInputChange}
             />
@@ -399,9 +385,7 @@ const PersonalInfo = ({
               id="agency_employee_no"
               name="agency_employee_no"
               inputMode="numeric"
-              pattern="[0-9 ]*"
               placeholder="Enter your agency employee number"
-              title="Numbers only"
               value={formData.agency_employee_no}
               onChange={handleInputChange}
             />
@@ -549,8 +533,6 @@ const PersonalInfo = ({
               id="telephone_no"
               name="telephone_no"
               placeholder="Enter your telephone number"
-              pattern="^[0-9][0-9\s]*$"
-              title="Numbers are only allowed"
               value={formData.telephone_no}
               onChange={handleInputChange}
             />
@@ -570,8 +552,6 @@ const PersonalInfo = ({
               name="mobile_no"
               required
               inputMode="numeric"
-              pattern="^[0-9][0-9\s]*$"
-              title="Numbers are only allowed"
               placeholder="Enter your mobile number"
               value={formData.mobile_no}
               onChange={handleInputChange}
