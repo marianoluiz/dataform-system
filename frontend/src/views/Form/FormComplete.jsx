@@ -166,7 +166,7 @@ const FormComplete = ({ formData, fromAdmin }) => {
       <div className="d-flex justify-content-center mt-4">
         <NavLink
           className="btn btn-primary form__navbtn text-center my-5"
-          to={fromAdmin? "/admin/dashboard":"/"}
+          to={fromAdmin? "/admin/manage":"/"}
         >
           {fromAdmin ? "Back to Dashboard" : "Back to Home"}
         </NavLink>
