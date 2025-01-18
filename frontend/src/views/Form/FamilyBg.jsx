@@ -86,8 +86,6 @@ const FamilyBg = ({
               id="spouse_lastname"
               name="spouse_lastname"
               placeholder="Enter spouse's last name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Enter a valid name"
               value={formData.spouse_lastname}
               onChange={handleInputChange}
             />
@@ -107,8 +105,6 @@ const FamilyBg = ({
               value={formData.spouse_firstname}
               onChange={handleInputChange}
               placeholder="Enter spouse's first name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Enter a valid name"
               required={formData.spouse_lastname} // 'converts any value to a boolean.
             />
           </div>
@@ -140,8 +136,6 @@ const FamilyBg = ({
               id="spouse_middlename"
               name="spouse_middlename"
               placeholder="Enter spouse's middle name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Enter a valid name"
               value={formData.spouse_middlename}
               onChange={handleInputChange}
             />
@@ -211,8 +205,6 @@ const FamilyBg = ({
               id="business_telephone"
               name="business_telephone"
               placeholder="Enter telephone number"
-              pattern="^[0-9][0-9\s]*$"
-              title="Numbers are only allowed"
               value={formData.business_telephone}
               onChange={handleInputChange}
             />
@@ -233,8 +225,6 @@ const FamilyBg = ({
               value={formData.father_lastname}
               placeholder="Enter father's last name"
               required
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Enter a valid name"
               onChange={handleInputChange}
             />
           </div>
@@ -252,8 +242,6 @@ const FamilyBg = ({
               name="father_firstname"
               value={formData.father_firstname}
               placeholder="Enter father's first name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Enter a valid name"
               onChange={handleInputChange}
               required
             />
@@ -288,8 +276,6 @@ const FamilyBg = ({
               name="father_middlename"
               value={formData.father_middlename}
               placeholder="Enter father's middle name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Please enter a valid name"
               onChange={handleInputChange}
             />
           </div>
@@ -310,8 +296,6 @@ const FamilyBg = ({
               value={formData.mother_lastname}
               placeholder="Enter mother's last name"
               required
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Please enter a valid name"
               onChange={handleInputChange}
             />
           </div>
@@ -330,8 +314,6 @@ const FamilyBg = ({
               value={formData.mother_firstname}
               placeholder="Enter mother's first name"
               required
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Please enter a valid name"
               onChange={handleInputChange}
             />
           </div>
@@ -366,8 +348,6 @@ const FamilyBg = ({
               name="mother_middlename"
               value={formData.mother_middlename}
               placeholder="Enter mother's middle name"
-              pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-              title="Please enter a valid first name"
               onChange={handleInputChange}
             />
           </div>

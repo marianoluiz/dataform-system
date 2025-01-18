@@ -163,15 +163,6 @@ const AdminDashboard = () => {
     ],
   };
 
-  // test
-  useEffect(() => {
-    console.log("student data: ", studentData);
-    console.log("sexStats: ", sexStats);
-    console.log("citizenshipStats: ", citizenshipStats);
-    console.log("civilStatusStats: ", civilStatusStats);
-    console.log("studentData.length: ", studentData.length);
-  });
-
   return (
     <AdminLayout>
       <div className="admin__dashboard container">

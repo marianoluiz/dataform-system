@@ -40,25 +40,25 @@ export const fetchStudentData = async () => {
         spouse_middlename: "Skibidi",
         spouse_extension: "Jr.",
 
-        spouse_occupation: "Stripper",
+        spouse_occupation: "Secretary",
 
         occupation: "Professional Eater",
         employer: "XYZ School",
-        business_address: "123 Diddy Mansion St, Country",
+        business_address: "123 Mansion St, Country",
         business_telephone: "1234567890",
 
-        father_lastname: "Diddy",
+        father_lastname: "Daddo",
         father_firstname: "Sean",
         father_middlename: "Pie",
         father_extension: "Sr.",
         mother_lastname: "Emily",
-        mother_firstname: "Motherfucker",
+        mother_firstname: "Smith",
         mother_middlename: "Smiths",
         mother_extension: "Cooper",
         children: [
           {
             id: "child_fullname_1",
-            child_fullname: "HevAbi978",
+            child_fullname: "John Wick",
             dob: "2015-01-01",
           },
         ],

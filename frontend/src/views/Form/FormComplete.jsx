@@ -1,13 +1,16 @@
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const FormComplete = ({ formData }) => {
+const FormComplete = ({ formData, fromAdmin }) => {
   return (
     <div className="form container">
-      <h1 className="fs-1 text-center mt-5">Submission Summary</h1>
+      <h1 className="fs-1 text-center mt-5">
+        {fromAdmin ? "Update Summary" : "Submission Summary"}
+      </h1>
       <p className="fs-6 text-center mb-5">
-        We have received your response. For any concerns, please contact the
-        administrator.
+        {fromAdmin
+          ? "Student Updated Successfully"
+          : "We have received your response. For any concerns, please contact the administrator."}
       </p>
 
       {/* Personal Information */}
@@ -163,9 +166,9 @@ const FormComplete = ({ formData }) => {
       <div className="d-flex justify-content-center mt-4">
         <NavLink
           className="btn btn-primary form__navbtn text-center my-5"
-          to="/"
+          to={fromAdmin? "/admin/dashboard":"/"}
         >
-          Back to Home
+          {fromAdmin ? "Back to Dashboard" : "Back to Home"}
         </NavLink>
       </div>
     </div>

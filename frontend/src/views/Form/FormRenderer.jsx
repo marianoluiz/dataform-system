@@ -67,10 +67,6 @@ const FormRenderer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState(initialFormData);
 
-  useEffect(() => {
-    console.log("formData:", formData);
-  }, [formData]);
-
   // Automatically populate form fields
   /* useEffect(() => {
         setFormData({
@@ -118,7 +114,7 @@ const FormRenderer = () => {
             father_middlename: 'Pie',
             father_extension: 'Sr.',
             mother_lastname: 'Emily',
-            mother_firstname: 'Motherfucker',
+            mother_firstname: 'Simile',
             mother_middlename: 'Smiths',
             mother_extension: 'Cooper',
             children: [
