@@ -6,15 +6,24 @@
 }
 
 .home__bg {
+  background-image: url('../img/plm-hero.jpg');
+  /* Fallback for older browsers */
+}
+
+.home__bg {
   position: absolute;
   height: 100vh;
   width: 100%;
-  background-image: url('../img/plm-hero.jpg');
   background-size: cover;
 
   background-repeat: no-repeat;
   filter: brightness(1);
   opacity: .9;
+
+  /* WebP for supported browsers */
+  @supports (background-image: url('data:image/webp;base64,...')) {
+    background-image: url('/plm-hero.webp');
+  }
 
   @media (max-width: 768px ) {
     background-position: center;
