@@ -2,6 +2,13 @@
 
 ### Tech stacks:
 
+###### Frontend:
+
+- React - frontend js library
+- Scss - css pre-processor
+- Bootstrap - frontend css framework
+- Vite - frontend build tool
+
 ###### Backend:
 
 - Hibernate / HQL - orm
@@ -9,13 +16,6 @@
 - Apache Tomcat - server
 
 *on going
-
-###### Frontend:
-
-- React - frontend js library
-- Scss - css pre-processor
-- Bootstrap - frontend css framework
-- Vite - frontend build tool
 
 ###### Database:
 - MySQL 
