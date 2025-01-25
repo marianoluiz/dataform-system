@@ -1,11 +1,11 @@
-const Pool = require('mysql')
-const { Connection } = require("mysql");
-
+import { Connection } from "mysql";
+import dotenv from "dotenv";
 const mysql = require("mysql");
-require("dotenv").config();
+
+dotenv.config();
 
 // use typeof for types imported
-const pool: typeof Pool = mysql.createPool({
+const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -15,7 +15,7 @@ const pool: typeof Pool = mysql.createPool({
 // changed to pool instead of createConnection
 
 // Connect to MySQL, this runns automatically
-pool.getConnection((err: Error, connection: typeof Connection) => {
+pool.getConnection((err: Error, connection: Connection) => {
   if (err) {
     console.error("Error connecting to MySQL: " + err.stack);
     return;
@@ -25,4 +25,4 @@ pool.getConnection((err: Error, connection: typeof Connection) => {
 
 
 
-module.exports = pool;
+export { pool };
