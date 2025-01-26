@@ -65,6 +65,18 @@ SELECT * FROM family_background;
 SELECT * FROM contact_info;
 SELECT * FROM family_children;
 
+ALTER TABLE personal_info
+  ADD COLUMN e_name VARCHAR(50);
+  
+ALTER TABLE personal_info
+MODIFY COLUMN e_name VARCHAR(50) AFTER m_name;
+
+ALTER TABLE family_background
+ADD COLUMN mother_mn_ename VARCHAR(50) AFTER mother_mn_mname;
+
+DELETE FROM personal_info 
+ WHERE p_id = 202334008;
+
 DESCRIBE personal_info;
 
 ALTER TABLE personal_info

@@ -26,3 +26,23 @@ export const addStudent = async (req: Request, res: Response) => {
     res.status(500).json({ err: (err as Error).message });
   }
 }
+
+export const updateStudent = async (req: Request, res: Response) => {
+  try {
+    const student = req.body;
+    await studentService.updateStudent(student);
+    res.status(201).json({message: `Student with ${student.p_id} is successfully updated`}); 
+  } catch (err) {
+    res.status(500).json({err: (err as Error).message });
+  }
+}
+
+export const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const { p_id } = req.params;
+    await studentService.deleteStudent(Number(p_id));
+    res.status(201).json({message: `Student with ${p_id} is successfully deleted`}); 
+  } catch (err) {
+    res.status(500).json({err: (err as Error).message });
+  }
+}
