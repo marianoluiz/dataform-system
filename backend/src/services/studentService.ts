@@ -9,3 +9,7 @@ export const getStudents = async (): Promise<StudentInfo[]> => {
   return studentInfos;
 
 }
+
+export const addStudent = async (newStudent: StudentInfo): Promise<void> => {
+  await studentModel.addNewStudent(newStudent);
+}
