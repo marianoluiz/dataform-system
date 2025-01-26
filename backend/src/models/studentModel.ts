@@ -1,8 +1,13 @@
+import { Connection } from 'mysql';
 import { pool } from '../config/database';
+import { addPersonalInfo } from './personalInfoModel';
+import { addFamilyChildren, FamilyChildren } from './familyChildrenModel';
+import { addFamilyBackground } from './familyBackgroundModel';
+import { addContactInfo } from './contactInfoModel';
 
 export interface StudentInfo {
   // personal info
-  p_id: number; // this gets repeated many times
+  p_id?: number; // db is auto increment so this no need
   sex_id: number;
   cstat_id: number;
   cit_id: number;
@@ -43,7 +48,6 @@ export interface StudentInfo {
   email_address :string;
 
   // family bg
-  fam_bg_id: number;
   spouse_lname: string;
   spouse_fname: string;
   spouse_mname: string;
@@ -57,13 +61,12 @@ export interface StudentInfo {
   mother_mn_fname: string;
   mother_mn_mname: string;
 
-  // family children
-  fam_ch_id: number;
-  child_fullname: string;
-  child_dob: Date;
+  children?: FamilyChildren[]; // array of family children
 }
 
-export const getStudents = async (): Promise<StudentInfo[]> => {
+// mysql library, the query method does not natively support async/await
+
+export const getStudents = (): Promise<StudentInfo[]> => {
   return new Promise((resolve, reject) => {
     // gets all students (left) then the contact info of 
     // them and fam bg (might be null since the left table 
@@ -81,8 +84,9 @@ export const getStudents = async (): Promise<StudentInfo[]> => {
     LEFT JOIN
       family_background fb ON pi.p_id = fb.p_id;
     `;
-
-    pool.query(query, (err: Error | null, result: StudentInfo[]) => {
+    
+    // callback in query
+    pool.query(query, (err: Error | null, result: StudentInfo[]) => { 
       if(err) {
         console.error("Failed to fetch students");
         reject(err)
@@ -92,25 +96,69 @@ export const getStudents = async (): Promise<StudentInfo[]> => {
 
     });
   });
+
 }
 
-export const addNewStudent = async (): Promise<void> => {
+export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
+  
   return new Promise((resolve, reject) => {
-      pool.query(``, (err?: Error) => {
-        
+    
+    // need to get connection again since 
+    // since accord to docs, 
+    // Simple transaction support is available at the connection level
+    pool.getConnection((err: Error | null, connection: Connection) => {
         if (err) {
-          console.error('Failed to add new student');
+          console.error("Failed to connect with the database");
           reject(err);
-        } else {
-          resolve();
+          return;
         }
 
-      })
+        // I read the docs & stackoverflow for this, bascially there are 2 ways,
+        // sql transaction or this npm lib transaction thing
+        connection.beginTransaction( async (transactionErr) => {
+          if (transactionErr) { 
+            console.error("Failed to start transaction");
+            throw transactionErr; 
+          }
+
+          try {
+            // adds student and expect the primary key, use await cuz this is not a query
+            const p_id = await addPersonalInfo(connection, newStudent);
+            await addFamilyBackground(p_id, connection, newStudent);
+            await addContactInfo(p_id, connection, newStudent);
+            await addFamilyChildren(p_id, connection, newStudent.children);
+
+            connection.commit((commitErr) => {
+              if (commitErr) {
+                connection.rollback(() => {
+                  connection.end(); // release
+                  console.error("Failed to commit transaction");
+                  return reject(commitErr);
+                });
+              }
+              connection.end(); // release
+              resolve();
+            });
+
+          } catch (err) {
+              connection.rollback(() => {
+              connection.end(); // release
+              console.error("Failed to add new student");
+              reject(err);
+            });
+          }
+
+
+
+        })
+
+    })
+
   })
 }
 
 export const updateStudent = async (): Promise<void> => {
-
+  
 }
 
 export const removeStudent = async (): Promise<void> => {
