@@ -13,3 +13,11 @@ export const getStudents = async (): Promise<StudentInfo[]> => {
 export const addStudent = async (newStudent: StudentInfo): Promise<void> => {
   await studentModel.addNewStudent(newStudent);
 }
+
+export const updateStudent = async (student: StudentInfo) => {
+  await studentModel.updateStudent(student);
+}
+
+export const deleteStudent = async (p_id: number) => {
+  await studentModel.removeStudent(p_id);
+}

@@ -5,6 +5,8 @@ const router = Router();
 
 router.get("/", studentController.getStudents);
 router.post("/", studentController.addStudent);
+router.put("/", studentController.updateStudent);
+router.delete("/", studentController.deleteStudent);
 
 export default router;
 // import name is determined by the import statement 

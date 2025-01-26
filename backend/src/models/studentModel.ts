@@ -1,9 +1,9 @@
 import { Connection } from 'mysql';
 import { pool } from '../config/database';
-import { addPersonalInfo } from './personalInfoModel';
-import { addFamilyChildren, FamilyChildren } from './familyChildrenModel';
-import { addFamilyBackground } from './familyBackgroundModel';
-import { addContactInfo } from './contactInfoModel';
+import * as personalInfoModel from './personalInfoModel';
+import * as familyChildrenModel from './familyChildrenModel';
+import * as familyBackgroundModel from './familyBackgroundModel';
+import * as contactInfoModel from './contactInfoModel';
 
 export interface StudentInfo {
   // personal info
@@ -15,6 +15,7 @@ export interface StudentInfo {
   l_name: string;
   f_name: string;
   m_name: string;
+  e_name: string;
   dob: Date;
   pob: string;
   height: number;
@@ -51,17 +52,20 @@ export interface StudentInfo {
   spouse_lname: string;
   spouse_fname: string;
   spouse_mname: string;
+  spouse_ename: string;
   spouse_occupation: string;
   spouse_employer: string;
   spouse_emp_address: string;
   father_lname: string;
   father_fname: string;
   father_mname: string;
+  father_ename: string;
   mother_mn_lname: string;
   mother_mn_fname: string;
   mother_mn_mname: string;
+  mother_mn_ename: string;
 
-  children?: FamilyChildren[]; // array of family children
+  children?: familyChildrenModel.FamilyChildren[]; // array of family children
 }
 
 // mysql library, the query method does not natively support async/await
@@ -73,16 +77,16 @@ export const getStudents = (): Promise<StudentInfo[]> => {
     // is the most important)
 
     const query = `
-    SELECT
-      pi.*,
-      ci.*,
-      fb.*
-    FROM
-      personal_info pi
-    LEFT JOIN
-      contact_info ci ON pi.p_id = ci.p_id
-    LEFT JOIN
-      family_background fb ON pi.p_id = fb.p_id;
+      SELECT
+        pi.*,
+        ci.*,
+        fb.*
+      FROM
+        personal_info pi
+      LEFT JOIN
+        contact_info ci ON pi.p_id = ci.p_id
+      LEFT JOIN
+        family_background fb ON pi.p_id = fb.p_id;
     `;
     
     // callback in query
@@ -106,7 +110,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
     // need to get connection again since 
     // since accord to docs, 
     // Simple transaction support is available at the connection level
-    pool.getConnection((err: Error | null, connection: Connection) => {
+    pool.getConnection((err: Error | null, connection: any) => {
         if (err) {
           console.error("Failed to connect with the database");
           reject(err);
@@ -115,7 +119,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
 
         // I read the docs & stackoverflow for this, bascially there are 2 ways,
         // sql transaction or this npm lib transaction thing
-        connection.beginTransaction( async (transactionErr) => {
+        connection.beginTransaction( async (transactionErr: Error) => {
           if (transactionErr) { 
             console.error("Failed to start transaction");
             throw transactionErr; 
@@ -123,26 +127,28 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
 
           try {
             // adds student and expect the primary key, use await cuz this is not a query
-            const p_id = await addPersonalInfo(connection, newStudent);
-            await addFamilyBackground(p_id, connection, newStudent);
-            await addContactInfo(p_id, connection, newStudent);
-            await addFamilyChildren(p_id, connection, newStudent.children);
+            const p_id = await personalInfoModel.addPersonalInfo(connection, newStudent);
+            await familyBackgroundModel.addFamilyBackground(p_id, connection, newStudent);
+            await contactInfoModel.addContactInfo(p_id, connection, newStudent);
+            await familyChildrenModel.addFamilyChildren(p_id, connection, newStudent.children);
 
-            connection.commit((commitErr) => {
+            connection.commit((commitErr: Error) => {
+
               if (commitErr) {
                 connection.rollback(() => {
-                  connection.end(); // release
+                  connection.release(); // release
                   console.error("Failed to commit transaction");
                   return reject(commitErr);
                 });
               }
-              connection.end(); // release
+              
+              connection.release(); // release
               resolve();
             });
 
           } catch (err) {
               connection.rollback(() => {
-              connection.end(); // release
+              connection.release(); // release
               console.error("Failed to add new student");
               reject(err);
             });
@@ -157,11 +163,114 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
   })
 }
 
-export const updateStudent = async (): Promise<void> => {
-  
+export const updateStudent = (student: StudentInfo): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err: Error | null, connection: Connection) => {
+            if (err) {
+              console.log('Failed getting connection');
+              reject(err);
+              return;
+            }
+
+            // this must be async so that i can await
+            connection.beginTransaction(async (transacErr) => {
+              
+              if (transacErr) {
+                console.error("Failed to start transaction");
+                reject(transacErr)
+              }
+
+              try {
+
+                await personalInfoModel.updatePersonalInfo(connection, student);
+                await familyBackgroundModel.updateFamilyBackground(connection, student);
+                await contactInfoModel.updateContactInfo(connection, student);
+                
+                if (student.p_id !== undefined) {
+                  await familyChildrenModel.updateFamilyChildren(student.p_id, connection, student.children);
+                } else {
+                  throw new Error("Student ID is undefined");
+                }
+
+
+                  connection.commit((commitErr) => {
+                    if (commitErr) {
+                      connection.rollback(() => {
+                        connection.end(); // release
+                        console.error("Failed to commit transaction");
+                        return reject(commitErr);
+                      });
+                    }
+                    connection.end(); // release
+                    resolve();
+                  });
+
+              } catch (err) {
+
+                connection.rollback(() => {
+                  connection.end(); // release
+                  console.error("Failed to add new student");
+                  reject(err);
+                });
+
+              }
+
+            })
+        })
+    });
 }
 
-export const removeStudent = async (): Promise<void> => {
+export const removeStudent = async (p_id: number): Promise<void> => {
+  return new Promise((resolve, reject) => {
 
+    pool.getConnection((err: Error | null, connection: Connection) => {
+      if (err) {
+        console.log('Failed getting connection');
+        reject(err);
+        return;
+      }
+        
+
+      connection.beginTransaction(async (transacErr) => {
+        
+        if (transacErr) {
+          console.error("Failed to start transaction");
+          reject(transacErr)
+        }
+
+        try {
+
+          await familyChildrenModel.deleteFamilyChildren(p_id, connection);
+          await familyBackgroundModel.deleteFamilyBackground(p_id, connection);
+          await contactInfoModel.deleteContactInfo(p_id, connection);
+          await personalInfoModel.deletePersonalInfo(p_id, connection);
+
+            connection.commit((commitErr) => {
+              if (commitErr) {
+                connection.rollback(() => {
+                  connection.end(); // release
+                  console.error("Failed to commit transaction");
+                  return reject(commitErr);
+                });
+              }
+              connection.end(); // release
+              resolve();
+            });
+
+        } catch (err) {
+
+          connection.rollback(() => {
+            connection.end(); // release
+            console.error("Failed to add new student");
+            reject(err);
+          });
+
+        }
+
+      })
+    });
+
+
+  });
 }
 

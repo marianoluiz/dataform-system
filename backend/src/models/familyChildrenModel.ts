@@ -38,11 +38,40 @@ export const addFamilyChildren = (p_id: number, connection: Connection, children
 
       connection.query(familyChildrenQuery, [familyChildrenValues], (err: Error | null, result: any) => {
         if (err) {
+          console.log("Failed to add children")
           reject(err);
         } else {
+          console.log(`Family Children added of ${p_id}`);
           resolve();
         }
       });
 
   });
+}
+
+
+export const updateFamilyChildren = async (p_id: number, connection: Connection, children: FamilyChildren[] | undefined): Promise<void> => {
+  await deleteFamilyChildren(p_id, connection);
+  await addFamilyChildren(p_id, connection, children);
+}
+
+export const deleteFamilyChildren = async (p_id: number, connection: Connection): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    
+    const deleteQuery = `
+      DELETE FROM family_children
+       WHERE p_id = ?
+    `;
+
+    connection.query(deleteQuery, [p_id], (err) => {
+      if (err) {
+        console.error("Failed to delete family children");
+        reject(err);
+      } else {
+        resolve();
+      }
+    })
+
+  })
+
 }

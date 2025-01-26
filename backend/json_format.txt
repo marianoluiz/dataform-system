@@ -1,13 +1,14 @@
 [
             {   
                 sex_id: 1;
-                cstat_id: 1;
+                cstat_id: 4;
                 cit_id: 1;
                 cit_acq_id: 1;
+
                 l_name: 'Pork',
                 f_name: 'John',
                 m_name: 'Skibidi',
-                e_name: 'Jr.',  # not in db
+                e_name: 'Jr.',
                 dob: '2005-12-10',
                 pob: 'city',
                 sex: 'male',  # not in db
@@ -26,30 +27,42 @@
                 citizenship: 'dual citizen', # not in db
                 dual_citizen_status: 'by_naturalization', # not in db
                 dual_citizenship_country: 'Hotel Transelvania', # not in db
-                residential_address: '123 Main St', # not in db
-                permanent_address: '123 Main St', # not in db
+                res_house_no: '123';
+                res_house_street: 'Cornelia St.';
+                res_village: 'Tondo Village';
+                res_bgy: '223';
+                res_citymun: 'Manila';
+                res_prov :'Metro Manila';
+                res_zipcode :'9732';
+                perm_house_no :'123';
+                perm_house_street :'Cornelia St.';
+                perm_village :'Tondo Village';
+                perm_bgy :'223';
+                perm_citymun :'Manila';
+                perm_prov :'Metro Manila';
+                perm_zipcode :'9732';
                 tel_no: '123456789',
                 mobile_no: '09123456789',
                 email_address: 'john.pork@email.com',
 
+
                 spouse_lname: 'Pork',
                 spouse_fname: 'Maris',
                 spouse_mname: 'Skibidi',
-                spouse_extension: 'Jr.', # not in db
+                spouse_ename: 'Jr.',
                 spouse_occupation: 'Bagger',
                 spouse_employer: 'XYZ School',
                 spouse_emp_address: '123 Doug Mansion St, Country',
                 father_lname: 'Dan',
                 father_fname: 'Sean',
                 father_mname: 'Pie',
-                father_extension: 'Sr.', # not in db
+                father_ename: '',
                 mother_mn_lname: 'Emily',
                 mother_mn_fname: 'Truck',
                 mother_mn_mname: 'Smiths',
-                mother_extension: 'Cooper', # not in db
+                mother_mn_ename: '',
                 children: [
                     {
-                        fam_ch_id: 1,
                         child_fullname: 'Bingus Chungus',
                         child_dob: '2015-01-01',
                     },
@@ -59,63 +72,77 @@
 ];
 
 
-json:
+
+json: 
 {
     "sex_id": 2,
     "cstat_id": 3,
     "cit_id": 2,
     "cit_acq_id": 2,
+
     "l_name": "Blaze",
     "f_name": "Alex",
     "m_name": "Thunder",
     "e_name": "III",
-    "dob": "1998-05-22",
-    "pob": "Misty Town",
+    "dob": "1995-04-15",
+    "pob": "Crystal City",
     "sex": "female",
     "civil_status": "married",
-    "civil_status_other": "partnered",
-    "height": "170",
-    "weight": "65",
+    "civil_status_other": "happily married",
+    "height": "165",
+    "weight": "58",
     "blood_type": "A-",
-    "gsis_no": "987654321",
-    "pagibig_no": "123987654",
-    "philhealth_no": "789456123",
-    "sss_no": "654987321",
-    "tin_no": "456123987",
-    "agency_empno": "987654321",
+    "gsis_no": "456789123",
+    "pagibig_no": "789456321",
+    "philhealth_no": "321654987",
+    "sss_no": "147258369",
+    "tin_no": "963852741",
+    "agency_empno": "000123456",
 
-    "citizenship": "single citizen",
-    "dual_citizen_status": "not applicable",
+    "citizenship": "dual citizen",
+    "dual_citizen_status": "by_birth",
     "dual_citizenship_country": "Atlantis",
-    "residential_address": "456 Another St, Suburb",
-    "permanent_address": "789 Long Road, Village",
-    "tel_no": "9876543210",
-    "mobile_no": "09123456780",
+    "res_house_no": "789",
+    "res_house_street": "Maple Avenue",
+    "res_village": "Green Meadows",
+    "res_bgy": "456",
+    "res_citymun": "Springfield",
+    "res_prov": "Hill Province",
+    "res_zipcode": "6543",
+    "perm_house_no": "789",
+    "perm_house_street": "Maple Avenue",
+    "perm_village": "Green Meadows",
+    "perm_bgy": "456",
+    "perm_citymun": "Springfield",
+    "perm_prov": "Hill Province",
+    "perm_zipcode": "6543",
+    "tel_no": "987654321",
+    "mobile_no": "09198765432",
     "email_address": "alex.blaze@email.com",
 
     "spouse_lname": "Carter",
     "spouse_fname": "Jordan",
     "spouse_mname": "Rivers",
-    "spouse_extension": "Sr.",
-    "spouse_occupation": "Artist",
-    "spouse_employer": "Creative Studios",
-    "spouse_emp_address": "123 Art St, Creative City",
+    "spouse_ename": "Sr.",
+    "spouse_occupation": "Teacher",
+    "spouse_employer": "Riverdale Academy",
+    "spouse_emp_address": "123 Knowledge Lane, Townsville",
     "father_lname": "Maxwell",
     "father_fname": "David",
     "father_mname": "Walker",
-    "father_extension": "Jr.",
-    "mother_mn_lname": "Woods",
-    "mother_mn_fname": "Olivia",
-    "mother_mn_mname": "Johnson",
-    "mother_extension": "Smith",
+    "father_ename": "Jr.",
+    "mother_mn_lname": "Wood",
+    "mother_mn_fname": "Sophia",
+    "mother_mn_mname": "Evergreen",
+    "mother_mn_ename": "Sr.",
     "children": [
         {
             "child_fullname": "Luna Maxwell",
-            "child_dob": "2020-11-21"
+            "child_dob": "2020-06-15"
         },
         {
-            "child_fullname": "Maximus Blaze",
-            "child_dob": "2023-05-30"
+            "child_fullname": "Max Blaze",
+            "child_dob": "2022-08-22"
         }
     ]
 }
