@@ -32,28 +32,34 @@
 
 #### Frontend
 1. Navigate to the frontend directory:
+
    ```sh
    cd frontend
    ```
 2. Install the dependencies:
+
    ```sh
    npm install
    ```
 3. Start the development server:
+
    ```sh
    npm run dev
    ```
 ##### Backend:
 1. Navigate to the backend directory:
+
    ```sh
    cd .. # from frontend dir
    cd backend
    ```
 2. Install the dependencies:
+
    ```sh
    npm install
    ```
 3. Setup Environment Variables:
+
    ```sh
     SERVER_PORT=?
     DB_HOST=?
@@ -62,12 +68,14 @@
     DB_NAME=?
    ```
 4. Start the backend server:
+
    ```sh
    npm start
    ```
 
 ##### Database:
 1. Download MySQL:
+
    ```sh
    https://dev.mysql.com/downloads/installer/
    ```
