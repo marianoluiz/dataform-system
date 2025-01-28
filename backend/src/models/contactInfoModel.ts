@@ -19,7 +19,7 @@ export const addContactInfo = (p_id: number, connection: Connection, newStudent:
         if (err) {
           reject(err);
         } else {
-          console.log(`ContactInfo added of ${p_id}`);
+          console.log(`ContactInfo of ${p_id} added`);
           resolve();
         }
       });
@@ -33,7 +33,7 @@ export const updateContactInfo = (connection: Connection, student: StudentInfo):
   return new Promise((resolve, reject) => {
 
     const contactInfoQuery = `
-      UPDATE family_background
+      UPDATE contact_info
          SET res_house_no = ?
          , res_house_street = ?
          , res_village = ?
@@ -62,6 +62,7 @@ export const updateContactInfo = (connection: Connection, student: StudentInfo):
       if (err) {
         reject(err);
       } else {
+        console.log(`ContactInfo of ${student.p_id} updated`);
         resolve();
       }
     })
@@ -82,6 +83,7 @@ export const deleteContactInfo = async (p_id: number, connection: Connection): P
         console.error("Failed to delete contact info");
         reject(err);
       } else {
+        console.log(`ContactInfo of ${p_id} deleted`);
         resolve();
       }
     })

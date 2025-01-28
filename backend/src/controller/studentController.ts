@@ -21,7 +21,7 @@ export const addStudent = async (req: Request, res: Response) => {
   try {
       const newStudent = req.body;
       await studentService.addStudent(newStudent);
-      res.status(201).json({message: `Student ${newStudent.l_name}, ${newStudent.f_name} added successfully`});
+      res.status(201).json({message: `Service: Student ${newStudent.l_name}, ${newStudent.f_name} added successfully`});
   } catch (err) {
     res.status(500).json({ err: (err as Error).message });
   }
@@ -31,17 +31,18 @@ export const updateStudent = async (req: Request, res: Response) => {
   try {
     const student = req.body;
     await studentService.updateStudent(student);
-    res.status(201).json({message: `Student with ${student.p_id} is successfully updated`}); 
+    res.status(201).json({message: `Service: Student with ${student.p_id} is successfully updated`}); 
   } catch (err) {
     res.status(500).json({err: (err as Error).message });
   }
 }
 
-export const deleteStudent = async (req: Request, res: Response) => {
+export const removeStudent = async (req: Request, res: Response) => {
   try {
     const { p_id } = req.params;
     await studentService.deleteStudent(Number(p_id));
-    res.status(201).json({message: `Student with ${p_id} is successfully deleted`}); 
+
+    res.status(201).json({message: `Service: Student with ${p_id} is successfully deleted`}); 
   } catch (err) {
     res.status(500).json({err: (err as Error).message });
   }

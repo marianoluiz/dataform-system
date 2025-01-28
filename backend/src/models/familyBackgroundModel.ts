@@ -20,7 +20,7 @@ export const addFamilyBackground = (p_id: number, connection: Connection, newStu
         reject(err);
         return;
       } else {
-        console.log(`Family Background added of ${p_id}`);
+        console.log(`Family Background of ${p_id} added`);
         resolve();
       }
 
@@ -55,13 +55,14 @@ export const updateFamilyBackground = (connection: Connection, student: StudentI
     `;
 
     const familyBackgroundValues = [
-      student.spouse_lname, student.spouse_fname, student.spouse_mname, student.spouse_occupation, student.spouse_employer, student.spouse_emp_address, student.father_lname, student.father_fname, student.father_mname, student.mother_mn_lname, student.mother_mn_fname, student.mother_mn_mname, student.p_id
+      student.spouse_lname, student.spouse_fname, student.spouse_mname, student.spouse_ename, student.spouse_occupation, student.spouse_employer, student.spouse_emp_address, student.father_lname, student.father_fname, student.father_mname, student.father_ename, student.mother_mn_lname, student.mother_mn_fname, student.mother_mn_mname, student.mother_mn_ename, student.p_id
     ]
 
     connection.query(familyBackgroundQuery, familyBackgroundValues, (err) => {
       if (err) {
         reject(err);
       } else {
+        console.log(`Family Background of ${student.p_id} updated`);
         resolve();
       }
     })
@@ -83,6 +84,7 @@ export const deleteFamilyBackground = async (p_id: number, connection: Connectio
         console.error("Failed to delete family background");
         reject(err);
       } else {
+        console.log(`Family Background of ${p_id} deleted`);
         resolve();
       }
     })

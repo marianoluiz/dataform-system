@@ -68,7 +68,9 @@ export interface StudentInfo {
   children?: familyChildrenModel.FamilyChildren[]; // array of family children
 }
 
-// mysql library, the query method does not natively support async/await
+// mysql library, the query method does not natively support async/await, i need the callback
+// regret: i could have used a mysql transaction query instead of this
+
 
 export const getStudents = (): Promise<StudentInfo[]> => {
   return new Promise((resolve, reject) => {
@@ -141,7 +143,8 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
                   return reject(commitErr);
                 });
               }
-              
+
+              console.log(`Successfully finished add transaction of person with id: ${p_id}`);
               connection.release(); // release
               resolve();
             });
@@ -149,7 +152,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
           } catch (err) {
               connection.rollback(() => {
               connection.release(); // release
-              console.error("Failed to add new student");
+              console.error(`Failed to add new student`);
               reject(err);
             });
           }
@@ -165,7 +168,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
 
 export const updateStudent = (student: StudentInfo): Promise<void> => {
     return new Promise((resolve, reject) => {
-        pool.getConnection((err: Error | null, connection: Connection) => {
+        pool.getConnection((err: Error | null, connection: any) => {
             if (err) {
               console.log('Failed getting connection');
               reject(err);
@@ -173,7 +176,7 @@ export const updateStudent = (student: StudentInfo): Promise<void> => {
             }
 
             // this must be async so that i can await
-            connection.beginTransaction(async (transacErr) => {
+            connection.beginTransaction(async (transacErr: Error) => {
               
               if (transacErr) {
                 console.error("Failed to start transaction");
@@ -185,31 +188,31 @@ export const updateStudent = (student: StudentInfo): Promise<void> => {
                 await personalInfoModel.updatePersonalInfo(connection, student);
                 await familyBackgroundModel.updateFamilyBackground(connection, student);
                 await contactInfoModel.updateContactInfo(connection, student);
-                
+                // updateFamilyChildren inside this if else
                 if (student.p_id !== undefined) {
                   await familyChildrenModel.updateFamilyChildren(student.p_id, connection, student.children);
                 } else {
                   throw new Error("Student ID is undefined");
                 }
 
-
-                  connection.commit((commitErr) => {
+                connection.commit((commitErr: Error) => {
                     if (commitErr) {
                       connection.rollback(() => {
-                        connection.end(); // release
+                        connection.release(); // release
                         console.error("Failed to commit transaction");
                         return reject(commitErr);
                       });
                     }
-                    connection.end(); // release
+                    connection.release(); // release
                     resolve();
+                    console.log(`Successfully completed transaction of student with id ${student.p_id}`);
                   });
 
               } catch (err) {
 
                 connection.rollback(() => {
-                  connection.end(); // release
-                  console.error("Failed to add new student");
+                  connection.release(); // release
+                  console.error("Failed to update student");
                   reject(err);
                 });
 
@@ -223,15 +226,14 @@ export const updateStudent = (student: StudentInfo): Promise<void> => {
 export const removeStudent = async (p_id: number): Promise<void> => {
   return new Promise((resolve, reject) => {
 
-    pool.getConnection((err: Error | null, connection: Connection) => {
+    pool.getConnection((err: Error | null, connection: any) => {
       if (err) {
         console.log('Failed getting connection');
         reject(err);
         return;
       }
-        
-
-      connection.beginTransaction(async (transacErr) => {
+      
+      connection.beginTransaction(async (transacErr: Error) => {
         
         if (transacErr) {
           console.error("Failed to start transaction");
@@ -245,23 +247,23 @@ export const removeStudent = async (p_id: number): Promise<void> => {
           await contactInfoModel.deleteContactInfo(p_id, connection);
           await personalInfoModel.deletePersonalInfo(p_id, connection);
 
-            connection.commit((commitErr) => {
+            connection.commit((commitErr: Error) => {
               if (commitErr) {
                 connection.rollback(() => {
-                  connection.end(); // release
+                  connection.release(); // release
                   console.error("Failed to commit transaction");
                   return reject(commitErr);
                 });
               }
-              connection.end(); // release
+              connection.release();
               resolve();
             });
 
         } catch (err) {
 
           connection.rollback(() => {
-            connection.end(); // release
-            console.error("Failed to add new student");
+            connection.release();
+            console.error(`Failed to add delete student with id ${p_id}`);
             reject(err);
           });
 
