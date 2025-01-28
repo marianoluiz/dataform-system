@@ -20,7 +20,7 @@ pool.getConnection((err: Error, connection: Connection) => {
     console.error("Error connecting to MySQL: " + err.stack);
     return;
   }
-  console.log("Connected to MySQL as ID " + connection.threadId);
+  console.log("\n\nConnected to MySQL as ID " + connection.threadId);
 });
 
 
