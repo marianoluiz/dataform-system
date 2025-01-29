@@ -1,7 +1,7 @@
 import AdminLayout from "../../layout/AdminLayout";
 import FormStepper from "../../components/FormStepper";
 import { useState, useEffect } from "react";
-import { fetchStudentData } from "../../api/StudentApi.js";
+import * as StudentApi from "../../api/StudentApi.js";
 import delete__btn from "../../img/delete__btn.svg";
 import edit__btn from "../../img/edit__btn.svg";
 import { useNavigate } from "react-router-dom";
@@ -9,15 +9,17 @@ import { deleteStudent } from "../../api/StudentApi.js";
 
 const AdminMangement = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const formPages = ["Personal Information", "Family Background"];
+
+  const formPages = ["Personal Information", "Contact Information", "Family Background"];
   const [formData, setFormData] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const getStudentData = async () => {
       try {
-        const data = await fetchStudentData();
+        const data = await StudentApi.getStudentData();
         setFormData(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -48,6 +50,12 @@ const AdminMangement = () => {
     "TIN ID No.",
     "Agency Employee No.",
     "Citizenship",
+  ];
+
+  const tbl2Headers = [
+    "#",
+    "CS ID",
+    "Name",
     "Residential Address",
     "Permanent Address",
     "Telephone No.",
@@ -55,7 +63,7 @@ const AdminMangement = () => {
     "Email No.",
   ];
 
-  const tbl2Headers = [
+  const tbl3Headers = [
     "#",
     "CS ID",
     "Name",
@@ -70,12 +78,23 @@ const AdminMangement = () => {
     "Children's Date of Birth",
   ];
 
+  let currentNavHeader;
+
+  if (currentPage === 2) {
+    currentNavHeader = tbl2Headers;
+  } else if (currentPage === 3) {
+    currentNavHeader = tbl3Headers;
+  } else {
+    currentNavHeader = tbl1Headers;
+  }
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // search logic
   const filteredData = formData.filter((data) =>
-    `${data.firstname} ${data.middlename} ${data.lastname} ${data.extension_name}`
+    `${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase()),
   );
@@ -132,25 +151,26 @@ const AdminMangement = () => {
           <table className="admin__tbl table table-bordered table-striped">
             <thead>
               <tr className="">
-                {(currentPage === 2 ? tbl2Headers : tbl1Headers).map(
-                  (header, index) => (
-                    <th key={index} scope="col" className="th__fw-normal">
-                      {header}
-                    </th>
-                  ),
-                )}
+                {currentNavHeader.map((header, index) => (
+                  <th key={index} scope="col" className="th__fw-normal">
+                    {header}
+                  </th>
+                ))}
                 <th className="action__cell action__cell-th">Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {/* if filtered data has 0 or below result, show no result found */}
               {filteredData.length > 0 ? (
-                filteredData.map((data, index) => (
-                  <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{data.cs_id}</td>
-                    <td>{`${data.firstname} ${data.middlename} ${data.lastname} ${data.extension_name}`}</td>
-                    {currentPage === 1 ? (
+                filteredData.map((data, index) => {
+                  /* this javascript logic (let, if else
+                  is allowed since it is part of
+                  the map function logic */
+                  let content;
+
+                  if (currentPage === 1) {
+                    content = (
                       <>
                         <td>{data.dob}</td>
                         <td>{data.pob}</td>
@@ -171,7 +191,19 @@ const AdminMangement = () => {
                         <td>{data.mobile_no}</td>
                         <td>{data.email}</td>
                       </>
-                    ) : (
+                    );
+                  } else if (currentPage === 2) {
+                    content = (
+                      <>
+                        <td>{`${data.res_house_no} ${data.res_house_street}, ${data.res_village} ${data.res_bgy}, ${data.res_citymun}, ${data.res_zipcode}`}</td>
+                        <td>{`${data.perm_house_no} ${data.perm_house_street}, ${data.perm_village} ${data.perm_bgy}, ${data.perm_citymun}, ${data.perm_zipcode}`}</td>
+                        <td>{data.tel_no}</td>
+                        <td>{data.mobile_no}</td>
+                        <td>{data.email_address}</td>
+                      </>
+                    );
+                  } else if (currentPage === 3) {
+                    content = (
                       <>
                         <td>{`${data.spouse_firstname} ${data.spouse_middlename} ${data.spouse_lastname} ${data.spouse_extension}`}</td>
                         <td>{data.spouse_occupation}</td>
@@ -189,17 +221,28 @@ const AdminMangement = () => {
                           {data.children.map((child) => child.dob).join(", ")}
                         </td>
                       </>
-                    )}
-                    <td className="action__cell action__cell-td">
-                      <button onClick={() => handleEdit(data)}>
-                        <img src={edit__btn} alt="Edit" />
-                      </button>
-                      <button onClick={() => deleteStudent(data.cs_id)}>
-                        <img src={delete__btn} alt="Delete" />
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                    );
+                  }
+
+                  return (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{data.cs_id}</td>
+                      <td>{`${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`}</td>
+
+                      {content}
+
+                      <td className="action__cell action__cell-td">
+                        <button onClick={() => handleEdit(data)}>
+                          <img src={edit__btn} alt="Edit" />
+                        </button>
+                        <button onClick={() => deleteStudent(data.cs_id)}>
+                          <img src={delete__btn} alt="Delete" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan={22} className="text-sm-center py-4">

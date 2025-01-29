@@ -68,6 +68,73 @@ export interface StudentInfo {
   children?: familyChildrenModel.FamilyChildren[]; // array of family children
 }
 
+// data type for newly fetched student info from database
+export interface RawStudentInfo {
+  // personal info
+  p_id?: number;
+  sex_id: number;
+  cstat_id: number;
+  cit_id: number;
+  cit_acq_id: number;
+  l_name: string;
+  f_name: string;
+  m_name: string;
+  e_name: string;
+  dob: Date;
+  pob: string;
+  height: number;
+  weight: number;
+  blood_type: string;
+  gsis_no: string;
+  pagibig_id: string;
+  philhealth_id: string;
+  sss_no: string;
+  tin: string;
+  agency_empno: string;
+
+  // contact info
+  contact_id: number;
+  res_house_no: string;
+  res_house_street: string;
+  res_village: string;
+  res_bgy: string;
+  res_citymun: string;
+  res_prov: string;
+  res_zipcode: string;
+  perm_house_no: string;
+  perm_house_street: string;
+  perm_village: string;
+  perm_bgy: string;
+  perm_citymun: string;
+  perm_prov: string;
+  perm_zipcode: string;
+  tel_no: string;
+  mobile_no: string;
+  email_address: string;
+
+  // family bg
+  spouse_lname: string;
+  spouse_fname: string;
+  spouse_mname: string;
+  spouse_ename: string;
+  spouse_occupation: string;
+  spouse_employer: string;
+  spouse_emp_address: string;
+  father_lname: string;
+  father_fname: string;
+  father_mname: string;
+  father_ename: string;
+  mother_mn_lname: string;
+  mother_mn_fname: string;
+  mother_mn_mname: string;
+  mother_mn_ename: string;
+
+  // children info
+  fam_ch_id?: number;
+  child_fullname?: string;
+  child_dob?: Date;
+}
+
 // mysql library, the query method does not natively support async/await, i need the callback
 // regret: i could have used a mysql transaction query instead of this
 
@@ -82,21 +149,25 @@ export const getStudents = (): Promise<StudentInfo[]> => {
       SELECT
         pi.*,
         ci.*,
-        fb.*
+        fb.*,
+        fc.*
       FROM
         personal_info pi
       LEFT JOIN
         contact_info ci ON pi.p_id = ci.p_id
       LEFT JOIN
-        family_background fb ON pi.p_id = fb.p_id;
+        family_background fb ON pi.p_id = fb.p_id
+      LEFT JOIN
+        family_children fc ON pi.p_id = fc.p_id
     `;
     
     // callback in query
-    pool.query(query, (err: Error | null, result: StudentInfo[]) => { 
+    pool.query(query, (err: Error | null, result: RawStudentInfo[]) => { 
       if(err) {
-        console.error("Failed to fetch students");
+        console.error("Failed getting table data");
         reject(err)
       } else {
+        console.log("Successfully got table data");
         resolve(result)
       }
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layout/AdminLayout";
-import { fetchStudentData } from "../../api/StudentApi";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import * as StudentApi from "../../api/StudentApi"; // api
 import ChartComponent, {
   chartOptions,
   ageLineOptions,
@@ -13,61 +12,66 @@ const AdminDashboard = () => {
   const [studentData, setStudentData] = useState([]);
   const [totalStudents, setTotalStudents] = useState(0); // Use state for totalStudents
   const [sexStats, setSexStats] = useState({ male: 0, female: 0 });
-  const [citizenshipStats, setCitizenshipStats] = useState({});
-  const [civilStatusStats, setCivilStatusStats] = useState({});
+  const [citizenshipStats, setCitizenshipStats] = useState({ filipino: 0, dual_citizen: 0});
+  const [civilStatusStats, setCivilStatusStats] = useState({ single: 0, married: 0, divorced: 0, others: 0});
   const [ageStats, setAgeStats] = useState({});
 
-  // Fetch student data
+
+
+  // get student data with component mounts
   useEffect(() => {
     const getStudentData = async () => {
       try {
-        const data = await fetchStudentData();
+        const data = await StudentApi.getStudentData();
         setStudentData(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
     };
-
+    
     getStudentData();
   }, []);
 
   // Calculate statistics
   useEffect(() => {
     const calculateStats = () => {
-      const sexStats = { male: 0, female: 0 };
-      const citizenshipStats = {};
-      const civilStatusStats = {};
-      const ageStats = {};
 
       studentData.forEach((student) => {
+        // student is one index of an array
+
         // Gender stats
-        if (student.sex.toLowerCase() === "male") {
+        if (student.sex_id === 1) {
           sexStats.male += 1;
-        } else if (student.sex.toLowerCase() === "female") {
+        } else if (student.sex_id === 2) {
           sexStats.female += 1;
         }
 
         // Citizenship stats
-        if (citizenshipStats[student.citizenship]) {
-          citizenshipStats[student.citizenship] += 1;
-        } else {
-          citizenshipStats[student.citizenship] = 1;
+        if (student.cit_id === 1) {
+          citizenshipStats.filipino += 1;
+        } else if (student.cit_id === 2) {
+          citizenshipStats.dual_citizen += 1;
         }
 
         // Civil status stats
-        if (civilStatusStats[student.civil_status]) {
-          civilStatusStats[student.civil_status] += 1;
-        } else {
-          civilStatusStats[student.civil_status] = 1;
+        if (student.cstat_id === 1) {
+          civilStatusStats.single += 1;
+        } else if (student.cstat_id === 2) {
+          civilStatusStats.married += 1;
+        } else if (student.cstat_id === 3) {
+          civilStatusStats.divorced += 1;
+        } else if (student.cstat_id === 4) {
+          civilStatusStats.others += 1;
         }
 
         // Age stats
+        // calculate frst
         const age = calculateAge(student.dob);
-        if (ageStats[age]) {
+        if (ageStats[age])
           ageStats[age] += 1;
-        } else {
+        else
           ageStats[age] = 1;
-        }
+        
       });
 
       setSexStats(sexStats);
@@ -91,9 +95,8 @@ const AdminDashboard = () => {
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
+    )
       age--;
-    }
 
     return age;
   };
@@ -132,7 +135,7 @@ const AdminDashboard = () => {
 
   // Citizenship - Bar Graph
   const citizenshipBarData = {
-    labels: Object.keys(citizenshipStats), // Citizenship types (e.g., 'American', 'Filipino')
+    labels: Object.keys(citizenshipStats),
     datasets: [
       {
         label: "Citizenship Types",
@@ -220,16 +223,6 @@ const AdminDashboard = () => {
                     />
                   </div>
                 </div>
-
-                {/*                                 <ul>
-                                    {Object.entries(citizenshipStats).map(
-                                        ([citizenship, count]) => (
-                                            <li key={citizenship}>
-                                                {citizenship}: {count}
-                                            </li>
-                                        ),
-                                    )}
-                                </ul> */}
               </div>
             </div>
 
