@@ -64,7 +64,7 @@ const parseRawStudent = async (studentInfos: RawStudentInfo[]): Promise<StudentI
   return studentsArray;
 }
 
-const parseId = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> => {
+/* const parseId = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> => {
 
   parsedStudents.forEach(async (student) => {
     
@@ -72,7 +72,7 @@ const parseId = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> =>
     // but the code will not wait for the promise to resolve before moving on to the next line.
     const sexDesc = await refSexModel.getRefSexDesc(student.sex_id);
 
-    
+
   });
   
-}
+} */
