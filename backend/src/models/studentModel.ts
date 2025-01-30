@@ -66,6 +66,11 @@ export interface StudentInfo {
   mother_mn_ename: string;
 
   children?: familyChildrenModel.FamilyChildren[]; // array of family children
+
+  sex_desc? :string;
+  cit_acq_desc?: string;
+  cit_desc?: string;
+  cstat_desc?: string;
 }
 
 // data type for newly fetched student info from database
