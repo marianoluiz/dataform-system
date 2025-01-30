@@ -6,11 +6,12 @@ import { StudentInfo, RawStudentInfo } from '../models/studentModel';
 export const getStudents = async (): Promise<StudentInfo[]> => {
   // get raw student info
   const studentInfos: RawStudentInfo[] = await studentModel.getStudents();
+
   // parses RawStudentInfo to StudentInfo
   const parsedStudents = parseRawStudent(studentInfos);
 
 
-  return parsedStudents;
+  return studentInfos;
 }
 
 export const addStudent = async (newStudent: StudentInfo): Promise<void> => {

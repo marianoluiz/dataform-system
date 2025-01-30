@@ -93,6 +93,9 @@ export interface RawStudentInfo {
   agency_empno: string;
 
   // contact info
+  // children_p_id: number; -- p_id of family_background tbl
+  // we kinda dont need the p_id of the children since we completely restructure the json
+  // to be an entire array per student
   contact_id: number;
   res_house_no: string;
   res_house_street: string;
@@ -144,13 +147,14 @@ export const getStudents = (): Promise<StudentInfo[]> => {
     // gets all students (left) then the contact info of 
     // them and fam bg (might be null since the left table 
     // is the most important)
-
+    // rename the children p_id as something else to not overwrite the main p_id
     const query = `
       SELECT
         pi.*,
         ci.*,
         fb.*,
-        fc.*
+        fc.p_id AS children_p_id,
+        fc.child_fullname, fc.child_dob, fc.fam_ch_id
       FROM
         personal_info pi
       LEFT JOIN
