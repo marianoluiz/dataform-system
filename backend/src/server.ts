@@ -4,11 +4,15 @@
 // any exported will run automatiucally thats 
 // why isee something in the console
 import express from "express";
+import cors from "cors";
 import studentRoute from "./routes/studentRoute";
 
 // Routes
 const app = express();
 const PORT = process.env.SERVER_PORT; // no need dotenv.config
+
+
+app.use(cors());
 
 // Middleware to parse (destringify the json)
 app.use(express.json());

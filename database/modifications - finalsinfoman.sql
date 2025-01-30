@@ -90,3 +90,31 @@ MODIFY COLUMN contact_id INT NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE family_background
 MODIFY COLUMN fam_bg_id INT NOT NULL AUTO_INCREMENT;
+
+  SELECT
+	pi.*,
+	ci.*,
+	fb.*,
+    fc.p_id AS children_p_id, -- rename to avoid overwriting the main p_id
+	fc.child_fullname, fc.child_dob, fc.fam_ch_id
+  FROM
+	personal_info pi
+  LEFT JOIN
+	contact_info ci ON pi.p_id = ci.p_id
+  LEFT JOIN
+	family_background fb ON pi.p_id = fb.p_id
+  LEFT JOIN
+	family_children fc ON pi.p_id = fc.p_id;
+    
+    delete from personal_info
+     where p_id = 202334046;
+     
+    delete from family_background
+     where fam_bg_id = 16;
+     
+    delete from family_children
+     where p_id = 202334046;
+     
+     delete from contact_info
+      where p_id = 202334046;
+    

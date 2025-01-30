@@ -102,7 +102,7 @@
   - `routes/`: Route definitions.
   - `services/`: Business logic and service functions.
   - `server.ts`: Entry point for the backend server.
-  - `studentModel` calls function from other models so the main model is the studentModel
+  - `studentModel.ts` calls function from other models in a transaction so this is the main model.
 - **Database**:
   - Normalized Relational Database:
   ![Demo](./readme_img/dataform-revengr.png)
