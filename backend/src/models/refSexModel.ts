@@ -25,3 +25,28 @@ export const getRefSexDesc = (sex_id: number): Promise<string> => {
   });
 
 }
+
+export const getRefSexId= (sex_desc: string): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT sex_id FROM ref_sex
+       WHERE sex_desc = ?
+    `;
+    
+    const queryValue = [sex_desc];
+    // the query defaultly returns [{json key: json pair}]
+    // so i get the inner value inside these model functions here
+    pool.query(query, queryValue, (err: Error, result: { sex_id: number }[]) => {
+      if (err) {
+        console.error(`Failed to get sex id`)
+        reject(err);
+      } else {
+        console.log(`Successfuly got sex id`)
+        resolve(result[0].sex_id);
+      }
+      
+    });
+
+  });
+
+}

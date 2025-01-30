@@ -11,16 +11,19 @@ export const getStudents = async (): Promise<StudentInfo[]> => {
   const studentInfos: RawStudentInfo[] = await studentModel.getStudents();
 
   // parses RawStudentInfo to StudentInfo
-  let parsedStudents = await parseRawStudent(studentInfos);
+  let parsedStudents = await parseRawStudentFromDb(studentInfos);
   // parse the ids
-  parsedStudents= await parseId(parsedStudents);
+  parsedStudents= await parseIdFromDb(parsedStudents);
 
   // return the student json with parsed family data and relevant ids
   return parsedStudents;
 }
 
 export const addStudent = async (newStudent: StudentInfo): Promise<void> => {
-  await studentModel.addNewStudent(newStudent);
+
+  const parsedStudentFromClient = await parseRawStudentFromClient(newStudent);
+  await studentModel.addNewStudent(parsedStudentFromClient);
+
 }
 
 export const updateStudent = async (student: StudentInfo) => {
@@ -32,7 +35,7 @@ export const deleteStudent = async (p_id: number) => {
 }
 
 // receives RawStudentInfo then parses it into StudentInfo
-const parseRawStudent = async (studentInfos: RawStudentInfo[]): Promise<StudentInfo[]> => {
+const parseRawStudentFromDb = async (studentInfos: RawStudentInfo[]): Promise<StudentInfo[]> => {
   const studentsArray: StudentInfo[] = [];
 
   // row => a student object
@@ -72,7 +75,7 @@ const parseRawStudent = async (studentInfos: RawStudentInfo[]): Promise<StudentI
 }
 
 // receives parsedStudent then parse the ids to get the description from the other tables
-const parseId = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> => {
+const parseIdFromDb = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> => {
 
   // for each does not support async operation, instead,
   // use `const <row> of <array/obj>
@@ -93,4 +96,25 @@ const parseId = async (parsedStudents: StudentInfo[]): Promise<StudentInfo[]> =>
   }
   
   return parsedStudents;
+}
+
+// converts descs to ids, return StudentInfo
+const parseRawStudentFromClient = async (studentFromClient: StudentInfo): Promise<StudentInfo> => {
+
+  // console.log('studentFromClient: ', studentFromClient);
+  
+    const sexId: number = await refSexModel.getRefSexId(studentFromClient.sex_desc || '');
+    const civilStatusId: number = await refCivilstatusModel.getCivilstatusId(studentFromClient.cstat_desc || '');
+    const citizenshipId: number = await refCitizenshipModel.getCitizenshipId(studentFromClient.cit_desc || '');
+    const citizenshipAcqId: number = await refCitAcqModel.getCitAcqId(studentFromClient.cit_acq_desc || '');
+    
+
+
+    studentFromClient.sex_id = sexId;
+    studentFromClient.cstat_id = civilStatusId;
+    studentFromClient.cit_id = citizenshipId;
+    studentFromClient.cit_acq_id = citizenshipAcqId;
+
+
+    return studentFromClient;
 }

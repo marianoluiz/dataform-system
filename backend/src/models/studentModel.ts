@@ -209,9 +209,14 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
 
           try {
             // adds student and expect the primary key, use await cuz this is not a query
+
             const p_id = await personalInfoModel.addPersonalInfo(connection, newStudent);
             await familyBackgroundModel.addFamilyBackground(p_id, connection, newStudent);
             await contactInfoModel.addContactInfo(p_id, connection, newStudent);
+            // the json which has children array automatically gets parsed by the db
+            // theres a pattern when u query and receive result, it would be wrapped by `[{}]`
+            // when u have a property that is wrapped by `[{}]`, like children: [{}]\
+            // it automatically gets parse by the db intelligently
             await familyChildrenModel.addFamilyChildren(p_id, connection, newStudent.children);
 
             connection.commit((commitErr: Error) => {
