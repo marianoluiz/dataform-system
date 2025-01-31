@@ -8,9 +8,28 @@ import { SidebarProvider } from "./context/SidebarContext";
 import FormRenderer from "./views/Form/FormRenderer.jsx";
 import './styles/main.scss';
 
+import { useEffect } from "react";
+import { useModal } from "./context/ModalContext.jsx";
+
+// modal
+import Modal from "./views/Modal/Modal.jsx";
+
 const App = () => {
+
+  const { openModal } = useModal();
+
+  useEffect(() => {
+    if (import.meta.env.VITE_NODE_ENV === "production") {
+      setTimeout(() => {
+        openModal();
+      }, 3000);
+
+    }
+  }, []);
+
   return (
     <SidebarProvider>
+      <Modal />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
