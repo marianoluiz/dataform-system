@@ -292,7 +292,7 @@ export const updateStudent = (student: StudentInfo): Promise<void> => {
                     }
                     connection.release(); // release
                     resolve();
-                    console.log(`Successfully completed transaction of student with id ${student.p_id}`);
+                    console.log(`Successfully completed update transaction of student with id ${student.p_id}`);
                   });
 
               } catch (err) {
@@ -342,6 +342,7 @@ export const removeStudent = async (p_id: number): Promise<void> => {
                   return reject(commitErr);
                 });
               }
+              console.log(`Successfully completed delete transaction of student with id ${p_id}`);
               connection.release();
               resolve();
             });
@@ -350,7 +351,7 @@ export const removeStudent = async (p_id: number): Promise<void> => {
 
           connection.rollback(() => {
             connection.release();
-            console.error(`Failed to add delete student with id ${p_id}`);
+            console.error(`Failed to delete student with id ${p_id}`);
             reject(err);
           });
 
