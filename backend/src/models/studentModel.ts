@@ -74,6 +74,8 @@ export interface StudentInfo {
 }
 
 // data type for newly fetched student info from database
+// i couldhve just added the extra properties and make it ? in the main model
+// but yea i think ill do that when im not in a hurry
 export interface RawStudentInfo {
   // personal info
   p_id?: number;
