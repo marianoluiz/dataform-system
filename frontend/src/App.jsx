@@ -16,14 +16,13 @@ import Modal from "./views/Modal/Modal.jsx";
 
 const App = () => {
 
-  const { openModal } = useModal();
-
+  // open modal once and not when it is opened
+  const { openModal, modalOpened} = useModal();
   useEffect(() => {
-    if (import.meta.env.VITE_NODE_ENV === "production") {
+    if (import.meta.env.VITE_NODE_ENV === "production" && !modalOpened) {
       setTimeout(() => {
         openModal();
       }, 3000);
-
     }
   }, []);
 

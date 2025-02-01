@@ -69,9 +69,8 @@ const AdminMangement = () => {
     "Name",
     "Spouse's Name",
     "Occupation",
-    "Employer / Business Name",
+    "Spouse's Employer",
     "Business Address",
-    "Telephone No.",
     "Father's Name",
     "Mother's Name",
     "Children's Name",
@@ -174,29 +173,28 @@ const AdminMangement = () => {
                       <>
                         <td>{data.dob}</td>
                         <td>{data.pob}</td>
-                        <td>{data.sex}</td>
-                        <td>{data.civil_status}</td>
+                        <td>{data.sex_desc}</td>
+                        <td>{data.cstat_desc}</td>
                         <td>{data.height}</td>
                         <td>{data.weight}</td>
                         <td>{data.blood_type}</td>
                         <td>{data.gsis_no}</td>
-                        <td>{data.philhealth_no}</td>
+                        <td>{data.pagibig_id}</td>
                         <td>{data.sss_no}</td>
-                        <td>{data.tin_no}</td>
-                        <td>{data.agency_employee_no}</td>
-                        <td>{data.citizenship}</td>
-                        <td>{data.residential_address}</td>
-                        <td>{data.permanent_address}</td>
-                        <td>{data.telephone_no}</td>
-                        <td>{data.mobile_no}</td>
-                        <td>{data.email}</td>
+                        <td>{data.tin}</td>
+                        <td>{data.agency_empno}</td>
+                        <td>{data.cit_desc}</td>
                       </>
                     );
                   } else if (currentPage === 2) {
                     content = (
                       <>
-                        <td>{`${data.res_house_no} ${data.res_house_street}, ${data.res_village} ${data.res_bgy}, ${data.res_citymun}, ${data.res_zipcode}`}</td>
-                        <td>{`${data.perm_house_no} ${data.perm_house_street}, ${data.perm_village} ${data.perm_bgy}, ${data.perm_citymun}, ${data.perm_zipcode}`}</td>
+                        <td>
+                          {`${data.res_house_no ? `${data.res_house_no} ` : ""}${data.res_house_street ? `${data.res_house_street}, ` : ""}${data.res_village ? `${data.res_village} ` : ""}${data.res_bgy ? `${data.res_bgy}, ` : ""}${data.res_citymun ? `${data.res_citymun}, ` : ""}${data.res_zipcode ? `${data.res_zipcode}` : ""}`}
+                        </td>
+                        <td>
+                          {`${data.perm_house_no ? `${data.perm_house_no} ` : ""}${data.perm_house_street ? `${data.perm_house_street}, ` : ""}${data.perm_village ? `${data.perm_village} ` : ""}${data.perm_bgy ? `${data.perm_bgy}, ` : ""}${data.perm_citymun ? `${data.perm_citymun}, ` : ""}${data.perm_zipcode ? `${data.perm_zipcode}` : ""}`}
+                        </td>
                         <td>{data.tel_no}</td>
                         <td>{data.mobile_no}</td>
                         <td>{data.email_address}</td>
@@ -205,20 +203,27 @@ const AdminMangement = () => {
                   } else if (currentPage === 3) {
                     content = (
                       <>
-                        <td>{`${data.spouse_firstname} ${data.spouse_middlename} ${data.spouse_lastname} ${data.spouse_extension}`}</td>
+                        <td>
+                          {`${data.spouse_firstname ? `${data.spouse_firstname} ` : ""}${data.spouse_middlename ? `${data.spouse_middlename} ` : ""}${data.spouse_lastname ? `${data.spouse_lastname} ` : ""}${data.spouse_extension ? `${data.spouse_extension}` : ""}`}
+                        </td>
                         <td>{data.spouse_occupation}</td>
-                        <td>{data.employer}</td>
-                        <td>{data.business_address}</td>
-                        <td>{data.business_telephone}</td>
-                        <td>{`${data.father_firstname} ${data.father_middlename} ${data.father_lastname} ${data.father_extension}`}</td>
-                        <td>{`${data.mother_firstname} ${data.mother_middlename} ${data.mother_lastname} ${data.mother_extension}`}</td>
+                        <td>{data.spouse_employer}</td>
+                        <td>{data.spouse_emp_address}</td>
+                        <td>
+                          {`${data.father_lname ? `${data.father_lname}, ` : ""}${data.father_fname ? `${data.father_fname} ` : ""}${data.father_mname ? `${data.father_mname} ` : ""}${data.father_ename ? `${data.father_ename}` : ""}`}
+                        </td>
+                        <td>
+                          {`${data.mother_mn_lname ? `${data.mother_mn_lname}, ` : ""}${data.mother_mn_fname ? `${data.mother_mn_fname} ` : ""}${data.mother_mn_mname ? `${data.mother_mn_mname} ` : ""}${data.mother_mn_ename ? `${data.mother_mn_ename}` : ""}`}
+                        </td>
                         <td>
                           {data.children
                             .map((child) => child.child_fullname)
                             .join(", ")}
                         </td>
                         <td>
-                          {data.children.map((child) => child.dob).join(", ")}
+                          {data.children
+                            .map((child) => child.child_dob)
+                            .join(", ")}
                         </td>
                       </>
                     );
@@ -227,8 +232,8 @@ const AdminMangement = () => {
                   return (
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
-                      <td>{data.cs_id}</td>
-                      <td>{`${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`}</td>
+                      <td>{data.p_id}</td>
+                      <td>{`${data.l_name}, ${data.f_name} ${data.m_name ? `${data.m_name}` : ""}  ${data.e_name ? `${data.e_name}` : ""}`}</td>
 
                       {content}
 
