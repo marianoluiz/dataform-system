@@ -5,7 +5,9 @@ import * as StudentApi from "../../api/StudentApi.js";
 import delete__btn from "../../img/delete__btn.svg";
 import edit__btn from "../../img/edit__btn.svg";
 import { useNavigate } from "react-router-dom";
-import { deleteStudent } from "../../api/StudentApi.js";
+import { useModal } from "../../context/ModalContext";
+import StatusModal from "../Modal/StatusModal";
+
 
 const AdminMangement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,8 +16,13 @@ const AdminMangement = () => {
   const [formData, setFormData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate(); // will be used to pass formData in update form
+
+  // status modal
+  const { openStatusModal } = useModal();
+
+  // get students
   useEffect(() => {
     const getStudentData = async () => {
       try {
@@ -27,11 +34,6 @@ const AdminMangement = () => {
     };
     getStudentData();
   }, []);
-
-  useEffect(() => {
-    console.log("current page: ", currentPage);
-    console.log("form data: ", formData);
-  }, [currentPage]);
 
   const tbl1Headers = [
     "#",
@@ -92,20 +94,41 @@ const AdminMangement = () => {
   };
 
   // search logic
-  const filteredData = formData.filter((data) =>
+  const filteredData = formData.filter((data) => 
     `${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase()),
   );
 
+  // this is the action when user clicks update
   const handleEdit = (data) => {
+    setFormData({
+      ...data
+      , p_id: data.p_id, // this includes the p_id to the form data when I click edit to a student
+    });
+    
+    console.log('handle edit data: ', data);
     // Navigate to the FormRenderer component with the selected student's data
     navigate("/form", { state: { formData: data } });
     // pass state to the location when navigating using the navigate function
   };
 
+  const handleDelete = async (p_id) => {
+    try {
+      await StudentApi.deleteStudent(p_id);
+      openStatusModal("Student deleted successfully", "success");
+      // refresh
+      const response = await StudentApi.getStudentData();
+      setFormData(response);
+    } catch (err) {
+      openStatusModal("Failed to delete student", "error");
+      console.error("Error deleting student:", err);
+    }
+  };
+
   return (
     <AdminLayout>
+      <StatusModal />
       <div className="admin__management container">
         <h1 className="mgmt__title text-end">Management</h1>
 
@@ -241,7 +264,9 @@ const AdminMangement = () => {
                         <button onClick={() => handleEdit(data)}>
                           <img src={edit__btn} alt="Edit" />
                         </button>
-                        <button onClick={() => deleteStudent(data.cs_id)}>
+                        <button onClick={() => handleDelete(data.p_id)}>
+                          {" "}
+                          {/* this function is from other file */}
                           <img src={delete__btn} alt="Delete" />
                         </button>
                       </td>

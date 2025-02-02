@@ -28,10 +28,8 @@ export const addStudent = async (newStudent: StudentInfo): Promise<void> => {
 
 export const updateStudent = async (student: StudentInfo) => {
 
-  const parsedStudentFromClient = await parseRawStudentFromClient(student);
-  console.log('parsedStudentFromClient: ', parsedStudentFromClient);
-  
-  await studentModel.updateStudent(parsedStudentFromClient);
+  console.log(`\nStarted Updating Student with p_id ${student.p_id}`);
+  await studentModel.updateStudent(student);
 }
 
 export const deleteStudent = async (p_id: number) => {

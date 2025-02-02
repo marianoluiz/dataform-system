@@ -38,10 +38,13 @@ export const getRefSexId= (sex_desc: string): Promise<number> => {
     // so i get the inner value inside these model functions here
     pool.query(query, queryValue, (err: Error, result: { sex_id: number }[]) => {
       if (err) {
-        console.error(`Failed to get sex id`)
+        console.error(`Failed to get sex id`);
         reject(err);
+      } else if (result.length === 0) {
+        console.log(`No sex id found`);
+        reject(err); // or handle it as needed
       } else {
-        console.log(`Successfuly got sex id`)
+        console.log(`Successfully got sex id`);
         resolve(result[0].sex_id);
       }
       

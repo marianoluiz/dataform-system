@@ -13,11 +13,12 @@ export const getStudentData = async () => {
 
 export const createStudent = async (student) => {
   try {
+    console.log('\nClient: Creating Student: ', student);
     const res = await apiClient.post('/', student);
     return res.data;
 
   } catch (err) {
-    console.error(`Client: Error posting student data with id ${student.p_id}`, err);
+    console.error(`Client: Error Creating Student`, err);
     throw err;
   }
 
@@ -25,11 +26,12 @@ export const createStudent = async (student) => {
 
 export const updateStudent = async (student) => {
   try {
-    const res = await apiClient.put('/', student.p_id);
+
+    const res = await apiClient.put("/", student);
     return res.data;
 
   } catch (err) {
-    console.error(`Client: Error putting student data with id ${student.p_id}`, err);
+    console.error(`Client: Error updating student data with id ${student.p_id}`, err);
     throw err;
   }
 };

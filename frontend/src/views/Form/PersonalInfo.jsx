@@ -1,13 +1,13 @@
 import PropTypes from "prop-types"; //for propTyping below
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const PersonalInfo = ({
   formData,
   setFormData,
   nextPage,
   formRef,
-  fromAdmin,
+  fromAdmin, // From admin edit, has some ui changes if true
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,12 +24,15 @@ const PersonalInfo = ({
     });
   };
 
+  useEffect(() => {
+    console.log(`Updated formData:`, formData);
+  }, [formData]);
+
   const [showOthersCivil, setShowOthersCivil] = useState(false);
   const [showOthersCitizenship, setShowOthersCitizenship] = useState(false);
 
   // all rows that has sub__label don't need mb-4 since they are already big enough to have space
   // i added mb-4 instead for those rows
-  const navigate = useNavigate();
 
   return (
     <div className="form container">
@@ -46,10 +49,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="lastname"
-              name="lastname"
+              name="l_name"
               placeholder="Enter your last name"
               required
-              value={formData.lastname}
+              value={formData.l_name}
               onChange={handleInputChange}
               /* no need to pass e, onchange automatically does that */
             />
@@ -67,10 +70,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="firstname"
-              name="firstname"
+              name="f_name"
               placeholder="Enter your first name"
               required
-              value={formData.firstname}
+              value={formData.f_name}
               onChange={handleInputChange}
             />
           </div>
@@ -85,9 +88,9 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="extension_name"
-              name="extension_name"
+              name="e_name"
               placeholder="Enter your extension name"
-              value={formData.extension_name}
+              value={formData.e_name}
               onChange={handleInputChange}
             />
           </div>
@@ -103,11 +106,11 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="middlename"
-              name="middlename"
+              name="m_name"
               placeholder="Enter your middle name"
               pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
               title="Please enter a valid middle name"
-              value={formData.middlename}
+              value={formData.m_name}
               onChange={handleInputChange}
             />
           </div>
@@ -159,14 +162,14 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="sex"
-              name="sex"
+              name="sex_desc"
               required
-              value={formData.sex}
+              value={formData.sex_desc}
               onChange={handleInputChange}
             >
               <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
             </select>
           </div>
         </div>
@@ -180,31 +183,31 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="civil_status"
-              name="civil_status"
+              name="cstat_desc"
               required
-              value={formData.civil_status}
+              value={formData.cstat_desc}
               onChange={(e) => {
                 handleInputChange(e);
                 // Puts up true in the showOthersCivil if value is 'others'
-                setShowOthersCivil(e.target.value === "others");
+                setShowOthersCivil(e.target.value === "Others");
               }}
             >
               <option value="">Select</option>
-              <option value="single">Single</option>
-              <option value="married">Married</option>
-              <option value="widowed">Widowed</option>
-              <option value="divorced">Divorced</option>
-              <option value="others">Others</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Others">Others</option>
             </select>
             {showOthersCivil && (
               <input
                 type="text"
                 className="form-control mt-4"
                 id="civil_status_other"
-                name="civil_status_other"
+                name="cstat_other"
                 placeholder="Please Specify*"
                 required
-                value={formData.civil_status_other}
+                value={formData.cstat_other}
                 onChange={handleInputChange}
               />
             )}
@@ -263,14 +266,14 @@ const PersonalInfo = ({
               onChange={handleInputChange}
             >
               <option value="">Select</option>
-              <option value="a+">A+</option>
-              <option value="a-">A-</option>
-              <option value="b+">B+</option>
-              <option value="b-">B-</option>
-              <option value="ab+">AB+</option>
-              <option value="ab-">AB-</option>
-              <option value="o+">O+</option>
-              <option value="o-">O-</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
             </select>
           </div>
         </div>
@@ -304,10 +307,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="pagibig_no"
-              name="pagibig_no"
+              name="pagibig_id"
               inputMode="numeric"
               placeholder="Enter your Pag-IBIG number"
-              value={formData.pagibig_no}
+              value={formData.pagibig_id}
               onChange={handleInputChange}
             />
           </div>
@@ -323,10 +326,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="philhealth_no"
-              name="philhealth_no"
+              name="philhealth_id"
               inputMode="numeric"
               placeholder="Enter your PhilHealth number"
-              value={formData.philhealth_no}
+              value={formData.philhealth_id}
               onChange={handleInputChange}
             />
           </div>
@@ -361,10 +364,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="tin_no"
-              name="tin_no"
+              name="tin"
               inputMode="numeric"
               placeholder="Enter your TIN number"
-              value={formData.tin_no}
+              value={formData.tin}
               onChange={handleInputChange}
             />
           </div>
@@ -383,10 +386,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="agency_employee_no"
-              name="agency_employee_no"
+              name="agency_empno"
               inputMode="numeric"
               placeholder="Enter your agency employee number"
-              value={formData.agency_employee_no}
+              value={formData.agency_empno}
               onChange={handleInputChange}
             />
           </div>
@@ -401,17 +404,17 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="citizenship"
-              name="citizenship"
+              name="cit_desc"
               required
-              value={formData.citizenship}
+              value={formData.cit_desc}
               onChange={(e) => {
                 handleInputChange(e);
-                setShowOthersCitizenship(e.target.value === "dual citizen");
+                setShowOthersCitizenship(e.target.value === "Dual Citizen");
               }}
             >
               <option value="">Select</option>
-              <option value="filipino">Filipino</option>
-              <option value="dual citizen">Dual Citizenship</option>
+              <option value="Filipino">Filipino</option>
+              <option value="Dual Citizen">Dual Citizenship</option>
             </select>
 
             {showOthersCitizenship && (
@@ -426,8 +429,8 @@ const PersonalInfo = ({
                       name="dual_citizenship_status"
                       onChange={handleInputChange}
                       id="by_birth"
-                      value="by_birth"
-                      checked={formData.dual_citizenship_status === "by_birth"}
+                      value="By Birth"
+                      checked={formData.dual_citizenship_status === "By Birth"}
                       required
                     />
                     <label className="form-check-label" htmlFor="by_birth">
@@ -442,9 +445,9 @@ const PersonalInfo = ({
                       type="radio"
                       name="dual_citizenship_status"
                       id="by_naturalization"
-                      value="by_naturalization"
+                      value="By Naturalization"
                       checked={
-                        formData.dual_citizenship_status === "by_naturalization"
+                        formData.dual_citizenship_status === "By Naturalization"
                       }
                       onChange={handleInputChange}
                       required
@@ -531,9 +534,9 @@ const PersonalInfo = ({
               type="tel"
               className="form-control"
               id="telephone_no"
-              name="telephone_no"
+              name="tel_no"
               placeholder="Enter your telephone number"
-              value={formData.telephone_no}
+              value={formData.tel_no}
               onChange={handleInputChange}
             />
           </div>
@@ -569,10 +572,10 @@ const PersonalInfo = ({
               type="email"
               className="form-control"
               id="email"
-              name="email"
+              name="email_address"
               placeholder="Enter your email address"
               required
-              value={formData.email}
+              value={formData.email_address}
               onChange={handleInputChange}
             />
           </div>
@@ -621,6 +624,7 @@ PersonalInfo.propTypes = {
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
   formRef: PropTypes.object.isRequired,
+  fromAdmin: PropTypes.bool
 };
 
 export default PersonalInfo;
