@@ -480,26 +480,129 @@ const PersonalInfo = ({
           </div>
         </div>
 
-        {/* Residential Address */}
+        {/* row */}
         <div className="mb-4 row">
-          <label
-            htmlFor="residential_address"
-            className="col-sm-3 col-form-label"
-          >
-            Residential Address *
+          {/* house no. */}
+          <label htmlFor="res_house_no" className="col-sm-3 col-form-label">
+            Residential House No.
+          </label>
+          <div className="col-sm-2">
+            <input
+              type="text"
+              className="form-control"
+              id="res_house_no"
+              name="res_house_no"
+              placeholder="Enter your residential house no."
+              value={formData.res_house_no}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* house strt */}
+          <label htmlFor="res_house_street" className="col-sm-2 col-form-label">
+            Residential Street *
+          </label>
+          <div className="col-sm-5">
+            <input
+              type="text"
+              className="form-control"
+              id="res_house_street"
+              name="res_house_street"
+              placeholder="Enter your residential house street"
+              required
+              value={formData.res_house_street}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* row */}
+        <div className="mb-4 row">
+          {/* res_village */}
+          <label htmlFor="res_village" className="col-sm-3 col-form-label">
+            Residential Village
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="res_village"
+              name="res_village"
+              placeholder="Enter your residential village"
+              value={formData.res_village}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* res_bgy */}
+          <label htmlFor="res_bgy" className="col-sm-2 col-form-label">
+            Residential Barangay *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="res_bgy"
+              name="res_bgy"
+              placeholder="Enter your residential house street"
+              required
+              value={formData.res_bgy}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* res_citymun */}
+        <div className="mb-4 row">
+          <label htmlFor="res_citymun" className="col-sm-3 col-form-label">
+            Residential City Municipality *
           </label>
           <div className="col-sm-9">
             <input
               type="text"
               className="form-control"
-              id="residential_address"
-              name="residential_address"
-              placeholder="Enter your residential address"
+              id="res_citymun"
+              name="res_citymun"
+              placeholder="Enter your residential house street"
               required
-              value={formData.residential_address}
+              value={formData.res_citymun}
               onChange={handleInputChange}
             />
           </div>
+        </div>
+
+        {/* res_prov */}
+        <label htmlFor="res_prov" className="col-sm-3 col-form-label">
+          Residential Province *
+        </label>
+        <div className="col-sm-9">
+          <input
+            type="text"
+            className="form-control"
+            id="res_prov"
+            name="res_prov"
+            placeholder="Enter your residential house street"
+            required
+            value={formData.res_prov}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* res_zipcode */}
+        <label htmlFor="res_zipcode" className="col-sm-3 col-form-label">
+          Residential Zipcode *
+        </label>
+        <div className="col-sm-9">
+          <input
+            type="text"
+            className="form-control"
+            id="res_zipcode"
+            name="res_zipcode"
+            placeholder="Enter your residential house street"
+            required
+            value={formData.res_zipcode}
+            onChange={handleInputChange}
+          />
         </div>
 
         {/* Permanent Address */}
