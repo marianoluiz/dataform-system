@@ -4,9 +4,33 @@
 - [Technology Stacks](#tech-stacks)
 - [How to use](#manual)
 - [Architecture](#architecture)
+- [License](#license)
 
 ## Demo:
-`Coming soon`
+
+Hero Page:
+
+![Landing Page](./readme_img/datasystem-landing.png)
+
+Register a student:
+
+![Register Page](./readme_img/datasystem-form.png)
+
+Login as an admin:
+
+![Login Page](./readme_img/datasystem-login.png)
+
+Dashboard Summary: 
+
+![Dashboard Page](./readme_img/datasystem-dashboard.png)
+
+Manage Student: 
+
+![Management Page](./readme_img/datasystem-management.png)
+
+Modal Popup: 
+
+![Modal Page](./readme_img/datasystem-management.png)
 
 ## Tech stacks:
 
@@ -26,7 +50,7 @@
 - [npm MySQL](https://www.npmjs.com/package/mysql) - library for connecting with MySQL RDBMS
 
 #### Database:
-- [MySQL](https://www.mysql.com/) - Relational Database
+- [MySQL](https://www.mysql.com/) - Relational Database Management System
 
 ## Manual:
 
@@ -106,3 +130,7 @@
 - **Database**:
   - Normalized Relational Database:
   ![Demo](./readme_img/dataform-revengr.png)
+
+## License
+
+This project was created as a school project and is not intended for commercial use. All rights reserved.
