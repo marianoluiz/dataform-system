@@ -88,13 +88,16 @@ const parseIdFromDb = async (parsedStudents: StudentInfo[]): Promise<StudentInfo
     const sexDesc: string = await refSexModel.getRefSexDesc(studentRow.sex_id);
     const civilStatusDesc: string = await refCivilstatusModel.getCivilstatusDesc(studentRow.cstat_id);
     const citizenshipDesc: string = await refCitizenshipModel.getCitizenshipDesc(studentRow.cit_id);
-    const citizenshipAcqDesc: string = await refCitAcqModel.getCitAcqDesc(studentRow.cit_acq_id);
+    const citizenshipAcqDesc: string | void = await refCitAcqModel.getCitAcqDesc(studentRow.cit_acq_id);
 
     // extract the raw data from db which has default array then object wrapper
     studentRow.sex_desc = sexDesc;
     studentRow.cstat_desc = civilStatusDesc;
     studentRow.cit_desc = citizenshipDesc;
-    studentRow.cit_acq_desc = citizenshipAcqDesc;
+
+    if (typeof citizenshipAcqDesc === 'string')
+      studentRow.cit_acq_desc = citizenshipAcqDesc;
+
   }
   
   return parsedStudents;
@@ -103,19 +106,22 @@ const parseIdFromDb = async (parsedStudents: StudentInfo[]): Promise<StudentInfo
 // converts descs to ids, return StudentInfo
 const parseRawStudentFromClient = async (studentFromClient: StudentInfo): Promise<StudentInfo> => {
 
-  // console.log('studentFromClient: ', studentFromClient);
+   console.log('studentFromClient: ', studentFromClient);
   
     const sexId: number = await refSexModel.getRefSexId(studentFromClient.sex_desc || '');
     const civilStatusId: number = await refCivilstatusModel.getCivilstatusId(studentFromClient.cstat_desc || '');
     const citizenshipId: number = await refCitizenshipModel.getCitizenshipId(studentFromClient.cit_desc || '');
-    const citizenshipAcqId: number = await refCitAcqModel.getCitAcqId(studentFromClient.cit_acq_desc || '');
+    const citizenshipAcqId: number | void = await refCitAcqModel.getCitAcqId(studentFromClient.cit_acq_desc || '');
     
 
 
     studentFromClient.sex_id = sexId;
     studentFromClient.cstat_id = civilStatusId;
     studentFromClient.cit_id = citizenshipId;
-    studentFromClient.cit_acq_id = citizenshipAcqId;
+
+    if (typeof citizenshipAcqId === 'number') 
+      studentFromClient.cit_acq_id = citizenshipAcqId;
+  
 
 
     return studentFromClient;

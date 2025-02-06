@@ -169,7 +169,7 @@ const AdminMangement = () => {
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 tbl__wrapper">
           <table className="admin__tbl table table-bordered table-striped">
             <thead>
               <tr className="">

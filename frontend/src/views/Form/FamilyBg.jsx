@@ -394,7 +394,7 @@ const FamilyBg = ({
                     type="date"
                     className="form-control"
                     id={`child_dob_${index}`}
-                    name={`dob`}
+                    name={`child_dob`}
                     value={formData.children[index].child_dob}
                     required={formData.children[index].child_fullname}
                     onChange={(e) => handleChildInputChange(e, index)}
