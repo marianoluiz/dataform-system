@@ -107,14 +107,15 @@ MODIFY COLUMN fam_bg_id INT NOT NULL AUTO_INCREMENT;
 	family_children fc ON pi.p_id = fc.p_id;
     
     delete from personal_info
-     where p_id = 202334046;
+     where p_id = 202334088;
      
     delete from family_background
-     where fam_bg_id = 16;
+     where p_id = 202334088;
      
     delete from family_children
-     where p_id = 202334046;
+     where p_id = 202334088;
      
      delete from contact_info
-      where p_id = 202334046;
+      where p_id = 202334088;
     
+select * from family_background;

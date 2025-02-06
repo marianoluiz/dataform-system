@@ -1,13 +1,13 @@
 import PropTypes from "prop-types"; //for propTyping below
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const PersonalInfo = ({
   formData,
   setFormData,
   nextPage,
   formRef,
-  fromAdmin,
+  fromAdmin, // From admin edit, has some ui changes if true
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,12 +24,15 @@ const PersonalInfo = ({
     });
   };
 
+  useEffect(() => {
+    console.log(`Updated formData:`, formData);
+  }, [formData]);
+
   const [showOthersCivil, setShowOthersCivil] = useState(false);
   const [showOthersCitizenship, setShowOthersCitizenship] = useState(false);
 
   // all rows that has sub__label don't need mb-4 since they are already big enough to have space
   // i added mb-4 instead for those rows
-  const navigate = useNavigate();
 
   return (
     <div className="form container">
@@ -46,10 +49,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="lastname"
-              name="lastname"
+              name="l_name"
               placeholder="Enter your last name"
               required
-              value={formData.lastname}
+              value={formData.l_name}
               onChange={handleInputChange}
               /* no need to pass e, onchange automatically does that */
             />
@@ -67,10 +70,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="firstname"
-              name="firstname"
+              name="f_name"
               placeholder="Enter your first name"
               required
-              value={formData.firstname}
+              value={formData.f_name}
               onChange={handleInputChange}
             />
           </div>
@@ -85,9 +88,9 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="extension_name"
-              name="extension_name"
+              name="e_name"
               placeholder="Enter your extension name"
-              value={formData.extension_name}
+              value={formData.e_name}
               onChange={handleInputChange}
             />
           </div>
@@ -103,11 +106,11 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="middlename"
-              name="middlename"
+              name="m_name"
               placeholder="Enter your middle name"
               pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
               title="Please enter a valid middle name"
-              value={formData.middlename}
+              value={formData.m_name}
               onChange={handleInputChange}
             />
           </div>
@@ -159,14 +162,14 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="sex"
-              name="sex"
+              name="sex_desc"
               required
-              value={formData.sex}
+              value={formData.sex_desc}
               onChange={handleInputChange}
             >
               <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
             </select>
           </div>
         </div>
@@ -180,31 +183,31 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="civil_status"
-              name="civil_status"
+              name="cstat_desc"
               required
-              value={formData.civil_status}
+              value={formData.cstat_desc}
               onChange={(e) => {
                 handleInputChange(e);
                 // Puts up true in the showOthersCivil if value is 'others'
-                setShowOthersCivil(e.target.value === "others");
+                setShowOthersCivil(e.target.value === "Others");
               }}
             >
               <option value="">Select</option>
-              <option value="single">Single</option>
-              <option value="married">Married</option>
-              <option value="widowed">Widowed</option>
-              <option value="divorced">Divorced</option>
-              <option value="others">Others</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Others">Others</option>
             </select>
             {showOthersCivil && (
               <input
                 type="text"
                 className="form-control mt-4"
                 id="civil_status_other"
-                name="civil_status_other"
+                name="cstat_other"
                 placeholder="Please Specify*"
                 required
-                value={formData.civil_status_other}
+                value={formData.cstat_other}
                 onChange={handleInputChange}
               />
             )}
@@ -263,14 +266,14 @@ const PersonalInfo = ({
               onChange={handleInputChange}
             >
               <option value="">Select</option>
-              <option value="a+">A+</option>
-              <option value="a-">A-</option>
-              <option value="b+">B+</option>
-              <option value="b-">B-</option>
-              <option value="ab+">AB+</option>
-              <option value="ab-">AB-</option>
-              <option value="o+">O+</option>
-              <option value="o-">O-</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
             </select>
           </div>
         </div>
@@ -304,10 +307,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="pagibig_no"
-              name="pagibig_no"
+              name="pagibig_id"
               inputMode="numeric"
               placeholder="Enter your Pag-IBIG number"
-              value={formData.pagibig_no}
+              value={formData.pagibig_id}
               onChange={handleInputChange}
             />
           </div>
@@ -323,10 +326,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="philhealth_no"
-              name="philhealth_no"
+              name="philhealth_id"
               inputMode="numeric"
               placeholder="Enter your PhilHealth number"
-              value={formData.philhealth_no}
+              value={formData.philhealth_id}
               onChange={handleInputChange}
             />
           </div>
@@ -361,10 +364,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="tin_no"
-              name="tin_no"
+              name="tin"
               inputMode="numeric"
               placeholder="Enter your TIN number"
-              value={formData.tin_no}
+              value={formData.tin}
               onChange={handleInputChange}
             />
           </div>
@@ -383,10 +386,10 @@ const PersonalInfo = ({
               type="text"
               className="form-control"
               id="agency_employee_no"
-              name="agency_employee_no"
+              name="agency_empno"
               inputMode="numeric"
               placeholder="Enter your agency employee number"
-              value={formData.agency_employee_no}
+              value={formData.agency_empno}
               onChange={handleInputChange}
             />
           </div>
@@ -401,17 +404,17 @@ const PersonalInfo = ({
             <select
               className="form-select"
               id="citizenship"
-              name="citizenship"
+              name="cit_desc"
               required
-              value={formData.citizenship}
+              value={formData.cit_desc}
               onChange={(e) => {
                 handleInputChange(e);
-                setShowOthersCitizenship(e.target.value === "dual citizen");
+                setShowOthersCitizenship(e.target.value === "Dual Citizen");
               }}
             >
               <option value="">Select</option>
-              <option value="filipino">Filipino</option>
-              <option value="dual citizen">Dual Citizenship</option>
+              <option value="Filipino">Filipino</option>
+              <option value="Dual Citizen">Dual Citizenship</option>
             </select>
 
             {showOthersCitizenship && (
@@ -426,8 +429,8 @@ const PersonalInfo = ({
                       name="dual_citizenship_status"
                       onChange={handleInputChange}
                       id="by_birth"
-                      value="by_birth"
-                      checked={formData.dual_citizenship_status === "by_birth"}
+                      value="By Birth"
+                      checked={formData.dual_citizenship_status === "By Birth"}
                       required
                     />
                     <label className="form-check-label" htmlFor="by_birth">
@@ -442,9 +445,9 @@ const PersonalInfo = ({
                       type="radio"
                       name="dual_citizenship_status"
                       id="by_naturalization"
-                      value="by_naturalization"
+                      value="By Naturalization"
                       checked={
-                        formData.dual_citizenship_status === "by_naturalization"
+                        formData.dual_citizenship_status === "By Naturalization"
                       }
                       onChange={handleInputChange}
                       required
@@ -479,43 +482,257 @@ const PersonalInfo = ({
 
         {/* Residential Address */}
         <div className="mb-4 row">
-          <label
-            htmlFor="residential_address"
-            className="col-sm-3 col-form-label"
-          >
-            Residential Address *
+          {/* house no. */}
+          <label htmlFor="res_house_no" className="col-sm-3 col-form-label">
+            Residential House No.
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="res_house_no"
+              name="res_house_no"
+              placeholder="House no."
+              value={formData.res_house_no}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* house strt */}
+          <label htmlFor="res_house_street" className="col-sm-2 col-form-label">
+            Residential Street *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="res_house_street"
+              name="res_house_street"
+              placeholder="House street"
+              required
+              value={formData.res_house_street}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* row */}
+        <div className="mb-4 row">
+          {/* res_village */}
+          <label htmlFor="res_village" className="col-sm-3 col-form-label">
+            Residential Village
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="res_village"
+              name="res_village"
+              placeholder="Village"
+              value={formData.res_village}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* res_bgy */}
+          <label htmlFor="res_bgy" className="col-sm-2 col-form-label">
+            Residential Barangay *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="res_bgy"
+              name="res_bgy"
+              placeholder="Barangay"
+              required
+              value={formData.res_bgy}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* res_citymun */}
+        <div className="mb-4 row">
+          <label htmlFor="res_citymun" className="col-sm-3 col-form-label">
+            Residential City / Municipality *
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="res_citymun"
+              name="res_citymun"
+              placeholder="Municipality"
+              required
+              value={formData.res_citymun}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* res_prov */}
+          <label htmlFor="res_prov" className="col-sm-2 col-form-label">
+            Residential Province *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="res_prov"
+              name="res_prov"
+              placeholder="Province"
+              required
+              value={formData.res_prov}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* res_zipcode */}
+        <div className="mb-4 row">
+          <label htmlFor="res_zipcode" className="col-sm-3 col-form-label">
+            Residential Zipcode *
           </label>
           <div className="col-sm-9">
             <input
               type="text"
               className="form-control"
-              id="residential_address"
-              name="residential_address"
-              placeholder="Enter your residential address"
+              id="res_zipcode"
+              name="res_zipcode"
+              placeholder="Zipcode"
               required
-              value={formData.residential_address}
+              value={formData.res_zipcode}
               onChange={handleInputChange}
             />
           </div>
         </div>
 
         {/* Permanent Address */}
+        {/* row */}
         <div className="mb-4 row">
+          {/* perm_house_no */}
+          <label htmlFor="perm_house_no" className="col-sm-3 col-form-label">
+            Permanent House No.
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_house_no"
+              name="perm_house_no"
+              placeholder="House no."
+              value={formData.perm_house_no}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* perm_house_street */}
           <label
-            htmlFor="permanent_address"
-            className="col-sm-3 col-form-label"
+            htmlFor="perm_house_street"
+            className="col-sm-2 col-form-label"
           >
-            Permanent Address *
+            Permanent Street *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_house_street"
+              name="perm_house_street"
+              placeholder="House street"
+              required
+              value={formData.perm_house_street}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* row */}
+        <div className="mb-4 row">
+          {/* perm_village */}
+          <label htmlFor="perm_village" className="col-sm-3 col-form-label">
+            Permanent Village
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_village"
+              name="perm_village"
+              placeholder="Village"
+              value={formData.perm_village}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* perm_bgy */}
+          <label htmlFor="perm_bgy" className="col-sm-2 col-form-label">
+            Permanent Barangay *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_bgy"
+              name="perm_bgy"
+              placeholder="Barangay"
+              required
+              value={formData.perm_bgy}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* perm_citymun */}
+        <div className="mb-4 row">
+          <label htmlFor="perm_citymun" className="col-sm-3 col-form-label">
+            Permanent City / Municipality *
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_citymun"
+              name="perm_citymun"
+              placeholder="Municipality"
+              required
+              value={formData.perm_citymun}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* perm_prov */}
+          <label htmlFor="perm_prov" className="col-sm-2 col-form-label">
+            Residential Province *
+          </label>
+          <div className="col-sm-4">
+            <input
+              type="text"
+              className="form-control"
+              id="perm_prov"
+              name="perm_prov"
+              placeholder="Province"
+              required
+              value={formData.perm_prov}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* perm_zipcode */}
+        <div className="mb-4 row">
+          <label htmlFor="perm_zipcode" className="col-sm-3 col-form-label">
+            Permanent Zipcode *
           </label>
           <div className="col-sm-9">
             <input
               type="text"
               className="form-control"
-              id="permanent_address"
-              name="permanent_address"
-              placeholder="Enter your permanent address"
+              id="perm_zipcode"
+              name="perm_zipcode"
+              placeholder="Zipcode"
               required
-              value={formData.permanent_address}
+              value={formData.perm_zipcode}
               onChange={handleInputChange}
             />
           </div>
@@ -531,9 +748,9 @@ const PersonalInfo = ({
               type="tel"
               className="form-control"
               id="telephone_no"
-              name="telephone_no"
+              name="tel_no"
               placeholder="Enter your telephone number"
-              value={formData.telephone_no}
+              value={formData.tel_no}
               onChange={handleInputChange}
             />
           </div>
@@ -569,10 +786,10 @@ const PersonalInfo = ({
               type="email"
               className="form-control"
               id="email"
-              name="email"
+              name="email_address"
               placeholder="Enter your email address"
               required
-              value={formData.email}
+              value={formData.email_address}
               onChange={handleInputChange}
             />
           </div>
@@ -621,6 +838,7 @@ PersonalInfo.propTypes = {
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
   formRef: PropTypes.object.isRequired,
+  fromAdmin: PropTypes.bool
 };
 
 export default PersonalInfo;

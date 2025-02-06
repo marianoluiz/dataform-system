@@ -37,7 +37,7 @@ export const addPersonalInfo = async (connection: Connection, newStudent: Studen
 
     connection.query(personalInfoQuery, personalInfoValues, (err: Error | null, result: any) => {
       if(err) {
-        console.error("Failed to fetch students");
+        console.error("personalInfoModel: Failed to add student");
           return reject(err);
       } else {
         console.log(`Personal Info of ${result.insertId} added`);

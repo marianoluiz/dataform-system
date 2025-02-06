@@ -5,7 +5,9 @@ import * as StudentApi from "../../api/StudentApi.js";
 import delete__btn from "../../img/delete__btn.svg";
 import edit__btn from "../../img/edit__btn.svg";
 import { useNavigate } from "react-router-dom";
-import { deleteStudent } from "../../api/StudentApi.js";
+import { useModal } from "../../context/ModalContext";
+import StatusModal from "../Modal/StatusModal";
+
 
 const AdminMangement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,8 +16,13 @@ const AdminMangement = () => {
   const [formData, setFormData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate(); // will be used to pass formData in update form
+
+  // status modal
+  const { openStatusModal } = useModal();
+
+  // get students
   useEffect(() => {
     const getStudentData = async () => {
       try {
@@ -27,11 +34,6 @@ const AdminMangement = () => {
     };
     getStudentData();
   }, []);
-
-  useEffect(() => {
-    console.log("current page: ", currentPage);
-    console.log("form data: ", formData);
-  }, [currentPage]);
 
   const tbl1Headers = [
     "#",
@@ -69,9 +71,8 @@ const AdminMangement = () => {
     "Name",
     "Spouse's Name",
     "Occupation",
-    "Employer / Business Name",
+    "Spouse's Employer",
     "Business Address",
-    "Telephone No.",
     "Father's Name",
     "Mother's Name",
     "Children's Name",
@@ -93,20 +94,41 @@ const AdminMangement = () => {
   };
 
   // search logic
-  const filteredData = formData.filter((data) =>
+  const filteredData = formData.filter((data) => 
     `${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase()),
   );
 
+  // this is the action when user clicks update
   const handleEdit = (data) => {
+    setFormData({
+      ...data
+      , p_id: data.p_id, // this includes the p_id to the form data when I click edit to a student
+    });
+    
+    console.log('handle edit data: ', data);
     // Navigate to the FormRenderer component with the selected student's data
     navigate("/form", { state: { formData: data } });
     // pass state to the location when navigating using the navigate function
   };
 
+  const handleDelete = async (p_id) => {
+    try {
+      await StudentApi.deleteStudent(p_id);
+      openStatusModal("Student deleted successfully", "success");
+      // refresh
+      const response = await StudentApi.getStudentData();
+      setFormData(response);
+    } catch (err) {
+      openStatusModal("Failed to delete student", "error");
+      console.error("Error deleting student:", err);
+    }
+  };
+
   return (
     <AdminLayout>
+      <StatusModal />
       <div className="admin__management container">
         <h1 className="mgmt__title text-end">Management</h1>
 
@@ -147,7 +169,7 @@ const AdminMangement = () => {
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 tbl__wrapper">
           <table className="admin__tbl table table-bordered table-striped">
             <thead>
               <tr className="">
@@ -174,29 +196,28 @@ const AdminMangement = () => {
                       <>
                         <td>{data.dob}</td>
                         <td>{data.pob}</td>
-                        <td>{data.sex}</td>
-                        <td>{data.civil_status}</td>
+                        <td>{data.sex_desc}</td>
+                        <td>{data.cstat_desc}</td>
                         <td>{data.height}</td>
                         <td>{data.weight}</td>
                         <td>{data.blood_type}</td>
                         <td>{data.gsis_no}</td>
-                        <td>{data.philhealth_no}</td>
+                        <td>{data.pagibig_id}</td>
                         <td>{data.sss_no}</td>
-                        <td>{data.tin_no}</td>
-                        <td>{data.agency_employee_no}</td>
-                        <td>{data.citizenship}</td>
-                        <td>{data.residential_address}</td>
-                        <td>{data.permanent_address}</td>
-                        <td>{data.telephone_no}</td>
-                        <td>{data.mobile_no}</td>
-                        <td>{data.email}</td>
+                        <td>{data.tin}</td>
+                        <td>{data.agency_empno}</td>
+                        <td>{data.cit_desc}</td>
                       </>
                     );
                   } else if (currentPage === 2) {
                     content = (
                       <>
-                        <td>{`${data.res_house_no} ${data.res_house_street}, ${data.res_village} ${data.res_bgy}, ${data.res_citymun}, ${data.res_zipcode}`}</td>
-                        <td>{`${data.perm_house_no} ${data.perm_house_street}, ${data.perm_village} ${data.perm_bgy}, ${data.perm_citymun}, ${data.perm_zipcode}`}</td>
+                        <td>
+                          {`${data.res_house_no ? `${data.res_house_no} ` : ""}${data.res_house_street ? `${data.res_house_street}, ` : ""}${data.res_village ? `${data.res_village} ` : ""}${data.res_bgy ? `${data.res_bgy}, ` : ""}${data.res_citymun ? `${data.res_citymun}, ` : ""}${data.res_zipcode ? `${data.res_zipcode}` : ""}`}
+                        </td>
+                        <td>
+                          {`${data.perm_house_no ? `${data.perm_house_no} ` : ""}${data.perm_house_street ? `${data.perm_house_street}, ` : ""}${data.perm_village ? `${data.perm_village} ` : ""}${data.perm_bgy ? `${data.perm_bgy}, ` : ""}${data.perm_citymun ? `${data.perm_citymun}, ` : ""}${data.perm_zipcode ? `${data.perm_zipcode}` : ""}`}
+                        </td>
                         <td>{data.tel_no}</td>
                         <td>{data.mobile_no}</td>
                         <td>{data.email_address}</td>
@@ -205,20 +226,27 @@ const AdminMangement = () => {
                   } else if (currentPage === 3) {
                     content = (
                       <>
-                        <td>{`${data.spouse_firstname} ${data.spouse_middlename} ${data.spouse_lastname} ${data.spouse_extension}`}</td>
+                        <td>
+                          {`${data.spouse_firstname ? `${data.spouse_firstname} ` : ""}${data.spouse_middlename ? `${data.spouse_middlename} ` : ""}${data.spouse_lastname ? `${data.spouse_lastname} ` : ""}${data.spouse_extension ? `${data.spouse_extension}` : ""}`}
+                        </td>
                         <td>{data.spouse_occupation}</td>
-                        <td>{data.employer}</td>
-                        <td>{data.business_address}</td>
-                        <td>{data.business_telephone}</td>
-                        <td>{`${data.father_firstname} ${data.father_middlename} ${data.father_lastname} ${data.father_extension}`}</td>
-                        <td>{`${data.mother_firstname} ${data.mother_middlename} ${data.mother_lastname} ${data.mother_extension}`}</td>
+                        <td>{data.spouse_employer}</td>
+                        <td>{data.spouse_emp_address}</td>
+                        <td>
+                          {`${data.father_lname ? `${data.father_lname}, ` : ""}${data.father_fname ? `${data.father_fname} ` : ""}${data.father_mname ? `${data.father_mname} ` : ""}${data.father_ename ? `${data.father_ename}` : ""}`}
+                        </td>
+                        <td>
+                          {`${data.mother_mn_lname ? `${data.mother_mn_lname}, ` : ""}${data.mother_mn_fname ? `${data.mother_mn_fname} ` : ""}${data.mother_mn_mname ? `${data.mother_mn_mname} ` : ""}${data.mother_mn_ename ? `${data.mother_mn_ename}` : ""}`}
+                        </td>
                         <td>
                           {data.children
                             .map((child) => child.child_fullname)
                             .join(", ")}
                         </td>
                         <td>
-                          {data.children.map((child) => child.dob).join(", ")}
+                          {data.children
+                            .map((child) => child.child_dob)
+                            .join(", ")}
                         </td>
                       </>
                     );
@@ -227,8 +255,8 @@ const AdminMangement = () => {
                   return (
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
-                      <td>{data.cs_id}</td>
-                      <td>{`${data.f_name} ${data.m_name} ${data.l_name} ${data.e_name}`}</td>
+                      <td>{data.p_id}</td>
+                      <td>{`${data.l_name}, ${data.f_name} ${data.m_name ? `${data.m_name}` : ""}  ${data.e_name ? `${data.e_name}` : ""}`}</td>
 
                       {content}
 
@@ -236,7 +264,9 @@ const AdminMangement = () => {
                         <button onClick={() => handleEdit(data)}>
                           <img src={edit__btn} alt="Edit" />
                         </button>
-                        <button onClick={() => deleteStudent(data.cs_id)}>
+                        <button onClick={() => handleDelete(data.p_id)}>
+                          {" "}
+                          {/* this function is from other file */}
                           <img src={delete__btn} alt="Delete" />
                         </button>
                       </td>

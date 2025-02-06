@@ -1,7 +1,7 @@
 
 import PropTypes from "prop-types";
-import { updateStudent } from "../../api/StudentApi";
-import { createStudent } from "../../api/StudentApi";
+import * as StudentApi from "../../api/StudentApi";
+import {  useState } from "react";
 
 const FamilyBg = ({
   nextPage,
@@ -9,11 +9,35 @@ const FamilyBg = ({
   formData,
   setFormData,
   formRef,
-  fromAdmin,
+  fromAdmin, /* if from admin, have some ui changes and query is update */
 }) => {
-  const handleSubmit = (e) => {
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    nextPage();
+    setLoading(true);
+    setError(null);
+
+    try {
+      if (fromAdmin) {
+        // update if from admin
+        await StudentApi.updateStudent(formData);
+      } else {
+        // create if from admin
+        await StudentApi.createStudent(formData);
+      }
+
+      nextPage();
+    } catch (err) {
+      setError(
+        `An error occurred while submitting the form. Please try again.`
+      );
+      console.error(err);
+    } finally {
+      setLoading(false);      
+    }
   };
 
   // Adding More a Child Section
@@ -66,9 +90,13 @@ const FamilyBg = ({
       }),
     });
 
-    console.log("index: ", index);
-    console.log("formData: ", formData.children);
+    // console.log("index: ", index);
+    // console.log("formData: ", formData.children);
   };
+
+  /* useEffect(() => {
+    console.log(`Updated formData:`, formData);
+  }, [formData]); */
 
   return (
     <div className="form container">
@@ -84,9 +112,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="spouse_lastname"
-              name="spouse_lastname"
+              name="spouse_lname"
               placeholder="Enter spouse's last name"
-              value={formData.spouse_lastname}
+              value={formData.spouse_lname}
               onChange={handleInputChange}
             />
           </div>
@@ -101,11 +129,11 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="spouse_firstname"
-              name="spouse_firstname"
-              value={formData.spouse_firstname}
+              name="spouse_fname"
+              value={formData.spouse_fname}
               onChange={handleInputChange}
               placeholder="Enter spouse's first name"
-              required={formData.spouse_lastname} // 'converts any value to a boolean.
+              required={formData.spouse_lname} // 'converts any value to a boolean.
             />
           </div>
           <label htmlFor="spouse_extension" className="col-sm-2">
@@ -117,9 +145,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="spouse_extension"
-              name="spouse_extension"
+              name="spouse_ename"
               placeholder="Enter spouse's extension name"
-              value={formData.spouse_extension}
+              value={formData.spouse_ename}
               onChange={handleInputChange}
             />
           </div>
@@ -134,9 +162,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="spouse_middlename"
-              name="spouse_middlename"
+              name="spouse_mname"
               placeholder="Enter spouse's middle name"
-              value={formData.spouse_middlename}
+              value={formData.spouse_mname}
               onChange={handleInputChange}
             />
           </div>
@@ -151,9 +179,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="occupation"
-              name="occupation"
+              name="spouse_occupation"
               placeholder="Enter occupation"
-              value={formData.occupation}
+              value={formData.spouse_occupation}
               onChange={handleInputChange}
               required
             />
@@ -169,9 +197,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="employer"
-              name="employer"
+              name="spouse_employer"
               placeholder="Enter employer/business name"
-              value={formData.employer}
+              value={formData.spouse_employer}
               onChange={handleInputChange}
             />
           </div>
@@ -186,26 +214,9 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="business_address"
-              name="business_address"
+              name="spouse_emp_address"
               placeholder="Enter business address"
-              value={formData.business_address}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="mb-5 row">
-          <label htmlFor="spouse_telephone" className="col-sm-3">
-            Telephone No.
-          </label>
-          <div className="col-sm-9">
-            <input
-              type="tel"
-              className="form-control"
-              id="business_telephone"
-              name="business_telephone"
-              placeholder="Enter telephone number"
-              value={formData.business_telephone}
+              value={formData.spouse_emp_address}
               onChange={handleInputChange}
             />
           </div>
@@ -221,8 +232,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="father_lastname"
-              name="father_lastname"
-              value={formData.father_lastname}
+              name="father_lname"
+              value={formData.father_lname}
               placeholder="Enter father's last name"
               required
               onChange={handleInputChange}
@@ -239,8 +250,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="father_firstname"
-              name="father_firstname"
-              value={formData.father_firstname}
+              name="father_fname"
+              value={formData.father_fname}
               placeholder="Enter father's first name"
               onChange={handleInputChange}
               required
@@ -256,8 +267,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="father_extension"
-              name="father_extension"
-              value={formData.father_extension}
+              name="father_ename"
+              value={formData.father_ename}
               placeholder="Enter father's extension name"
               onChange={handleInputChange}
             />
@@ -273,8 +284,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="father_middlename"
-              name="father_middlename"
-              value={formData.father_middlename}
+              name="father_mname"
+              value={formData.father_mname}
               placeholder="Enter father's middle name"
               onChange={handleInputChange}
             />
@@ -292,8 +303,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="mother_lastname"
-              name="mother_lastname"
-              value={formData.mother_lastname}
+              name="mother_mn_lname"
+              value={formData.mother_mn_lname}
               placeholder="Enter mother's last name"
               required
               onChange={handleInputChange}
@@ -310,8 +321,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="mother_firstname"
-              name="mother_firstname"
-              value={formData.mother_firstname}
+              name="mother_mn_fname"
+              value={formData.mother_mn_fname}
               placeholder="Enter mother's first name"
               required
               onChange={handleInputChange}
@@ -327,8 +338,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="mother_extension"
-              name="mother_extension"
-              value={formData.mother_extension}
+              name="mother_mn_ename"
+              value={formData.mother_mn_ename}
               onChange={handleInputChange}
               placeholder="Enter mother's extension name"
             />
@@ -345,8 +356,8 @@ const FamilyBg = ({
               type="text"
               className="form-control"
               id="mother_middlename"
-              name="mother_middlename"
-              value={formData.mother_middlename}
+              name="mother_mn_mname"
+              value={formData.mother_mn_mname}
               placeholder="Enter mother's middle name"
               onChange={handleInputChange}
             />
@@ -383,8 +394,8 @@ const FamilyBg = ({
                     type="date"
                     className="form-control"
                     id={`child_dob_${index}`}
-                    name={`dob`}
-                    value={formData.children[index].dob}
+                    name={`child_dob`}
+                    value={formData.children[index].child_dob}
                     required={formData.children[index].child_fullname}
                     onChange={(e) => handleChildInputChange(e, index)}
                   />
@@ -431,13 +442,14 @@ const FamilyBg = ({
             </button>
           </div>
 
+          {error && <p className="text-danger">{error}</p>}
+
           {/* Submit Button */}
           <div>
             {fromAdmin ? (
               <button
                 type="submit"
                 className="btn form__navbtn btn-primary"
-                onClick={() => updateStudent(formData.cs_id, formData)}
               >
                 Update Form
               </button>
@@ -445,7 +457,7 @@ const FamilyBg = ({
               <button
                 type="submit"
                 className="btn form__navbtn btn-primary"
-                onClick={() => createStudent(formData)}
+                disabled={loading}
               >
                 Submit Form
               </button>
@@ -463,6 +475,7 @@ FamilyBg.propTypes = {
   formData: PropTypes.object.isRequired,
   formRef: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
+  fromAdmin: PropTypes.bool
 };
 
 export default FamilyBg;

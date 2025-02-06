@@ -21,9 +21,8 @@ const FormComplete = ({ formData, fromAdmin }) => {
               <h5 className="card-title">Personal Information</h5>
               <ul className="list-unstyled">
                 <li>
-                  <strong>Full Name:</strong> {formData.firstname}{" "}
-                  {formData.middlename} {formData.lastname}{" "}
-                  {formData.extension_name}
+                  <strong>Full Name:</strong> {formData.f_name}{" "}
+                  {formData.m_name} {formData.l_name} {formData.e_name}
                 </li>
                 <li>
                   <strong>Date of Birth:</strong> {formData.dob}
@@ -32,13 +31,13 @@ const FormComplete = ({ formData, fromAdmin }) => {
                   <strong>Place of Birth:</strong> {formData.pob}
                 </li>
                 <li>
-                  <strong>Sex:</strong> {formData.sex}
+                  <strong>Sex:</strong> {formData.sex_desc}
                 </li>
                 <li>
                   <strong>Civil Status:</strong>{" "}
                   {formData.civil_status === "others"
-                    ? formData.civil_status_other
-                    : formData.civil_status}
+                    ? formData.cstat_other
+                    : formData.cstat_desc}
                 </li>
                 <li>
                   <strong>Height:</strong> {formData.height} cm
@@ -61,13 +60,13 @@ const FormComplete = ({ formData, fromAdmin }) => {
               <h5 className="card-title">Contact Information</h5>
               <ul className="list-unstyled">
                 <li>
-                  <strong>Telephone No:</strong> {formData.telephone_no}
+                  <strong>Telephone No:</strong> {formData.tel_no}
                 </li>
                 <li>
                   <strong>Mobile No:</strong> {formData.mobile_no}
                 </li>
                 <li>
-                  <strong>Email:</strong> {formData.email}
+                  <strong>Email:</strong> {formData.email_address}
                 </li>
                 <li>
                   <strong>Residential Address:</strong>{" "}
@@ -89,36 +88,33 @@ const FormComplete = ({ formData, fromAdmin }) => {
               <h6>Spouse</h6>
               <ul className="list-unstyled">
                 <li>
-                  <strong>Name:</strong> {formData.spouse_firstname}{" "}
-                  {formData.spouse_middlename} {formData.spouse_lastname}{" "}
-                  {formData.spouse_extension}
+                  <strong>Name:</strong> {formData.spouse_fname}{" "}
+                  {formData.spouse_mname} {formData.spouse_lname}{" "}
+                  {formData.spouse_ename}
                 </li>
                 <li>
                   <strong>Occupation:</strong> {formData.spouse_occupation}
                 </li>
                 <li>
-                  <strong>Employer:</strong> {formData.employer}
+                  <strong>Employer:</strong> {formData.spouse_employer}
                 </li>
                 <li>
-                  <strong>Business Address:</strong> {formData.business_address}
-                </li>
-                <li>
-                  <strong>Business Telephone:</strong>{" "}
-                  {formData.business_telephone}
+                  <strong>Business Address:</strong>{" "}
+                  {formData.spouse_emp_address}
                 </li>
               </ul>
 
               <h6>Parents</h6>
               <ul className="list-unstyled">
                 <li>
-                  <strong>Father:</strong> {formData.father_firstname}{" "}
-                  {formData.father_middlename} {formData.father_lastname}{" "}
-                  {formData.father_extension}
+                  <strong>Father:</strong> {formData.father_fname}{" "}
+                  {formData.father_mname} {formData.father_lname}{" "}
+                  {formData.father_ename}
                 </li>
                 <li>
-                  <strong>Mother:</strong> {formData.mother_firstname}{" "}
-                  {formData.mother_middlename} {formData.mother_lastname}{" "}
-                  {formData.mother_extension}
+                  <strong>Mother:</strong> {formData.mother_mn_fname}{" "}
+                  {formData.mother_mn_mname} {formData.mother_mn_lname}{" "}
+                  {formData.mother_mn_ename}
                 </li>
               </ul>
 
@@ -127,7 +123,7 @@ const FormComplete = ({ formData, fromAdmin }) => {
                 {formData.children.map((child, index) => (
                   <li key={index}>
                     <strong>Child {index + 1}:</strong> {child.child_fullname},
-                    Date of Birth: {child.dob}
+                    Date of Birth: {child.child_dob}
                   </li>
                 ))}
               </ul>
@@ -142,11 +138,11 @@ const FormComplete = ({ formData, fromAdmin }) => {
               <h5 className="card-title">Citizenship Information</h5>
               <ul className="list-unstyled">
                 <li>
-                  <strong>Citizenship:</strong> {formData.citizenship}
+                  <strong>Citizenship:</strong> {formData.cit_desc}
                 </li>
                 <li>
                   <strong>Dual Citizenship Status:</strong>{" "}
-                  {formData.dual_citizenship_status === "by_birth"
+                  {formData.cit_acq_desc === "By Birth"
                     ? "By Birth"
                     : "By Naturalization"}
                 </li>
@@ -166,7 +162,7 @@ const FormComplete = ({ formData, fromAdmin }) => {
       <div className="d-flex justify-content-center mt-4">
         <NavLink
           className="btn btn-primary form__navbtn text-center my-5"
-          to={fromAdmin? "/admin/manage":"/"}
+          to={fromAdmin ? "/admin/manage" : "/"}
         >
           {fromAdmin ? "Back to Dashboard" : "Back to Home"}
         </NavLink>

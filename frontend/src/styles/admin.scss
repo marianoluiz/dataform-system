@@ -109,10 +109,16 @@
 }
 
 .admin__tbl {
-  display: block;
   font-size: .8rem;
-  overflow-x: auto;
   border-collapse: collapse;
+}
+
+/*  for scrolling effect */
+.tbl__wrapper {
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 450px;
+  overflow-x: scroll;
 }
 
 .action__cell {
@@ -120,8 +126,8 @@
   right: 0; /* Stick to the right edge */
   white-space: nowrap;
   background-color: #c5c5c5;
-  z-index: 4;
-    box-shadow: -2px 0 15px rgba(0, 0, 0, .2) !important;
+  z-index: 2;
+  box-shadow: -2px 0 15px rgba(0, 0, 0, .2) !important;
 }
 
 .action__cell button {
@@ -141,10 +147,4 @@
     padding-right: .4rem !important;
     }
   }
-}
-
-.action__cell-td {
-  vertical-align: middle;
-    /* for table */
-  text-align: center;
 }

@@ -204,6 +204,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
         // I read the docs & stackoverflow for this, bascially there are 2 ways,
         // sql transaction or this npm lib transaction thing
         connection.beginTransaction( async (transactionErr: Error) => {
+          console.log(`\nStudentModel: Started Transaction `)
           if (transactionErr) { 
             console.error("Failed to start transaction");
             throw transactionErr; 
@@ -239,7 +240,7 @@ export const addNewStudent = (newStudent: StudentInfo): Promise<void> => {
           } catch (err) {
               connection.rollback(() => {
               connection.release(); // release
-              console.error(`Failed to add new student`);
+              console.error(`studentModal: Transaction Failed, Failed to add new student`);
               reject(err);
             });
           }
