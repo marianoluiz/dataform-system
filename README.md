@@ -30,7 +30,7 @@ Manage Student:
 
 Modal Popup: 
 
-![Modal Page](./readme_img/datasystem-management.png)
+![Modal Page](./readme_img/datasystem-modal.png)
 
 ## Tech stacks:
 
