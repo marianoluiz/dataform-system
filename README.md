@@ -1,9 +1,9 @@
 # Personal Data Forms Website
 
 - [Demo](#demo)
+- [Architecture](#architecture)
 - [Technology Stacks](#tech-stacks)
 - [How to use](#manual)
-- [Architecture](#architecture)
 - [License](#license)
 
 ## Demo:
@@ -31,6 +31,29 @@ Manage Student:
 Modal Popup: 
 
 ![Modal Page](./readme_img/datasystem-modal.png)
+
+## Architecture:
+
+### Key Components
+- **Frontend**:
+  - `components/`: Reusable UI components.
+  - `views/`: Page components for different routes.
+  - `api/`: API client for making HTTP requests.
+  - `context/`: Context providers for state management.
+  - `layout/`: Layout components for consistent UI structure.
+  - `styles/`: SCSS files for styling.
+
+- **Backend**:
+  - `config/`: Configuration files (e.g., database connection).
+  - `controller/`: Controllers for handling HTTP requests.
+  - `models/`: Database models and queries.
+  - `routes/`: Route definitions.
+  - `services/`: Business logic and service functions.
+  - `server.ts`: Entry point for the backend server.
+  - `studentModel.ts` calls function from other models in a transaction so this is the main model.
+- **Database**:
+  - Normalized Relational Database:
+  ![Database Structure](./readme_img/dataform-revengr.png)
 
 ## Tech stacks:
 
@@ -107,29 +130,6 @@ Modal Popup:
 
 3. Make sure your database is running at the right port at your environment variables.
 
-
-## Architecture:
-
-### Key Components
-- **Frontend**:
-  - `components/`: Reusable UI components.
-  - `views/`: Page components for different routes.
-  - `api/`: API client for making HTTP requests.
-  - `context/`: Context providers for state management.
-  - `layout/`: Layout components for consistent UI structure.
-  - `styles/`: SCSS files for styling.
-
-- **Backend**:
-  - `config/`: Configuration files (e.g., database connection).
-  - `controller/`: Controllers for handling HTTP requests.
-  - `models/`: Database models and queries.
-  - `routes/`: Route definitions.
-  - `services/`: Business logic and service functions.
-  - `server.ts`: Entry point for the backend server.
-  - `studentModel.ts` calls function from other models in a transaction so this is the main model.
-- **Database**:
-  - Normalized Relational Database:
-  ![Demo](./readme_img/dataform-revengr.png)
 
 ## License
 
